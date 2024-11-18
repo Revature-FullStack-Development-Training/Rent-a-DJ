@@ -1,4 +1,4 @@
-package com.revature.Rent_A_DJ;
+package com.revature;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
