@@ -29,11 +29,11 @@ public class Reservation {
     @Column(nullable = false)
     private LocalDateTime timedate = LocalDateTime.parse("2013-12-18T14:30");
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @OneToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "DJId",referencedColumnName = "DJId") //this links our FK to the PK in User (has to be the same amount!!!)
     private DJ dj;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @OneToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "userId",referencedColumnName = "userId") //this links our FK to the PK in User (has to be the same amount!!!)
     private User user;
 
@@ -48,13 +48,13 @@ public class Reservation {
 
     @Override
     public String toString() {
-        return "User{" +
-                "userId=" + userId +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", username='" + username + '\'' +
-                ", password='" + password + '\'' +
-                ", role='" + role + '\'' +
+        return "Reservation{" +
+                "reservationId=" + reservationId +
+                ", creationTime=" + creationTime +
+                ", location='" + location + '\'' +
+                ", timedate=" + timedate +
+                ", dj=" + dj +
+                ", user=" + user +
                 '}';
     }
 }
