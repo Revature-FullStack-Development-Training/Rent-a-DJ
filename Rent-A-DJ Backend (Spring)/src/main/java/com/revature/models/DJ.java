@@ -12,12 +12,12 @@ import java.util.List;
 @Setter
 @Component //This Class will be registered as a Spring Bean
 @Entity //This Class will be created as a table in the DB (In other words, a DB ENTITY)
-@Table(schema="project2", name = "DJs") //@Table lets us set properties like table name. THIS IS NOT WHAT MAKES IT A TABLE
+@Table(schema="project2", name = "djs") //@Table lets us set properties like table name. THIS IS NOT WHAT MAKES IT A TABLE
 public class DJ {
 
     @Id //This makes the field the primary key
     @GeneratedValue(strategy = GenerationType.IDENTITY) //This makes our PK auto-increment (like serial)
-    private int DJId;
+    private int djId;
 
     @Column(nullable = false)
     private String firstName;
@@ -32,9 +32,9 @@ public class DJ {
     private String password;
 
     @Column(nullable = false)
-    private int rate = 0;
+    private double rate = 0;
 
-    @OneToMany(mappedBy = "DJ", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "dj", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JsonIgnore //prevents the circular reference in our JSON responses
     private List<Reservation> reservations;
 

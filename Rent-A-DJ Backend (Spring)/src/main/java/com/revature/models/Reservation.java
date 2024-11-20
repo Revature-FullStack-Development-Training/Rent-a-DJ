@@ -36,7 +36,7 @@ public class Reservation {
     private String status;
 
     @OneToMany(fetch = FetchType.EAGER)
-    @JoinColumn(name = "DJId",referencedColumnName = "DJId") //this links our FK to the PK in User (has to be the same amount!!!)
+    @JoinColumn(name = "djId",referencedColumnName = "djId") //this links our FK to the PK in User (has to be the same amount!!!)
     private DJ dj;
 
     @OneToMany(fetch = FetchType.EAGER)
