@@ -2,15 +2,13 @@ package com.revature.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 
-@Setter
-@Getter
 @Component //This Class will be registered as a Spring Bean
 @Entity //This Class will be created as a table in the DB (In other words, a DB ENTITY)
 @Table(schema="project2", name = "reservations") //@Table lets us set properties like table name. THIS IS NOT WHAT MAKES IT A TABLE
@@ -42,6 +40,60 @@ public class Reservation {
     @OneToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "userId",referencedColumnName = "userId") //this links our FK to the PK in User (has to be the same amount!!!)
     private User user;
+
+    public int getReservationId() {
+        return reservationId;
+    }
+    public void setReservationId(int reservationId) {
+        this.reservationId = reservationId;
+    }
+
+    public LocalDateTime getCreationTime() {
+        return creationTime;
+    }
+
+    public LocalDateTime getStartdatetime() {
+        return startdatetime;
+    }
+    public void setStartdatetime(LocalDateTime startdatetime) {
+        this.startdatetime = startdatetime;
+    }
+
+    public LocalDateTime getEnddatetime() {
+        return enddatetime;
+    }
+    public void setEnddatetime(LocalDateTime enddatetime) {
+        this.enddatetime = enddatetime;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public DJ getDj() {
+        return dj;
+    }
+    public void setDj(DJ dj) {
+        this.dj = dj;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 
     public Reservation() {}
 
