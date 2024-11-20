@@ -2,14 +2,10 @@ package com.revature.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-@Getter
-@Setter
 @Component //This Class will be registered as a Spring Bean
 @Entity //This Class will be created as a table in the DB (In other words, a DB ENTITY)
 @Table(schema="project2", name = "users") //@Table lets us set properties like table name. THIS IS NOT WHAT MAKES IT A TABLE
@@ -46,6 +42,62 @@ public class User {
         this.username = username;
         this.password = password;
         this.role = role;
+    }
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public List<Reservation> getReservations() {
+        return reservations;
+    }
+
+    public void setReservations(List<Reservation> reservations) {
+        this.reservations = reservations;
     }
 
     @Override
