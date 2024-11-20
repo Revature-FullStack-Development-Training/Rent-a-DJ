@@ -8,9 +8,11 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-//Check UserDAO for general notes about how Spring Data DAOs work
-
 @Repository //make this class a Bean (1 of the 4 steretype annotations)
 public interface ReservationDAO extends JpaRepository<Reservation, Integer> {
+    Reservation findByReservationId(int reservationId);
 
+    List<Reservation> findByUser(User user);
+    List<Reservation> findByStatus(String status);
+    List<Reservation> findByUserAndStatus(User user, String status);
 }
