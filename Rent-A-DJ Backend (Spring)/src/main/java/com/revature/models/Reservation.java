@@ -32,6 +32,9 @@ public class Reservation {
     @Column(nullable = false)
     private String location;
 
+    @Column(nullable = false)
+    private String status;
+
     @OneToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "DJId",referencedColumnName = "DJId") //this links our FK to the PK in User (has to be the same amount!!!)
     private DJ dj;
@@ -42,7 +45,7 @@ public class Reservation {
 
     public Reservation() {}
 
-    public Reservation(String location, String starttimedate, String endtimedate, DJ dj, User user){
+    public Reservation(String location, String starttimedate, String endtimedate, DJ dj, User user, String status){
         this.location = location;
         this.starttimedate = LocalDateTime.parse(starttimedate);
         this.endtimedate = LocalDateTime.parse(endtimedate);
