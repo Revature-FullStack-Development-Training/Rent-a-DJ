@@ -24,13 +24,13 @@ public class Reservation {
     private LocalDateTime creationTime = LocalDateTime.now(ZoneId.of("America/Los_Angeles"));
 
     @Column(nullable = false)
-    private String location;
-
-    @Column(nullable = false)
     private LocalDateTime starttimedate = LocalDateTime.parse("2013-12-18T14:30");
 
     @Column(nullable = false)
     private LocalDateTime endtimedate = LocalDateTime.parse("2013-12-18T14:30");
+
+    @Column(nullable = false)
+    private String location;
 
     @OneToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "DJId",referencedColumnName = "DJId") //this links our FK to the PK in User (has to be the same amount!!!)

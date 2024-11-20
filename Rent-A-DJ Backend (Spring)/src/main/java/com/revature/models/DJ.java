@@ -31,6 +31,9 @@ public class DJ {
     @Column(nullable = false)
     private String password;
 
+    @Column(nullable = false)
+    private int rate = 0;
+
     @OneToMany(mappedBy = "DJ", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JsonIgnore //prevents the circular reference in our JSON responses
     private List<Reservation> reservations;
