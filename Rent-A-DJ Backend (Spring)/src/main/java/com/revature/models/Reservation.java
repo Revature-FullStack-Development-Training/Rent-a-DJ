@@ -8,7 +8,6 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.List;
 
 @Setter
 @Getter
@@ -30,11 +29,11 @@ public class Reservation {
     @Column(nullable = false)
     private LocalDateTime timedate = LocalDateTime.parse("2013-12-18T14:30");
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @OneToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "DJId",referencedColumnName = "DJId") //this links our FK to the PK in User (has to be the same amount!!!)
     private DJ dj;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @OneToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "userId",referencedColumnName = "userId") //this links our FK to the PK in User (has to be the same amount!!!)
     private User user;
 
