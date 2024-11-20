@@ -28,7 +28,7 @@ public class ReservationService {
     }
 
     //This method takes in a new Reservation object and inserts it into the DB
-    public Reservation addReservation(String location, String starttimedate, String endtimedate, DJ dj, User user, String status) {
+    public Reservation addReservation(String location, String startdatetime, String enddatetime, DJ dj, User user, String status) {
 
         //Another important role of the Service layer: data processing -
         //Turn the ReservationDTO into a Reservation to send to the DAO (DAO takes Reservation objects, not ReservationDTOs)
@@ -36,7 +36,7 @@ public class ReservationService {
         //reservationId will be generated (so 0 is just a placeholder)
         //species and name come from the DTO
         //user will be set with the userId in the DTO
-        Reservation newReservation = new Reservation(location, starttimedate, endtimedate, dj, user, status);
+        Reservation newReservation = new Reservation(location, startdatetime, enddatetime, dj, user, status);
 
         //Use the UserDAO to get a User by id
         Optional<User> u = Optional.ofNullable(uDAO.findByUsername(user.getUsername()).getFirst());

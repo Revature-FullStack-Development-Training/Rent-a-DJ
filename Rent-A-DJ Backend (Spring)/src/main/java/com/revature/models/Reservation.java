@@ -24,10 +24,10 @@ public class Reservation {
     private LocalDateTime creationTime = LocalDateTime.now(ZoneId.of("America/Los_Angeles"));
 
     @Column(nullable = false)
-    private LocalDateTime starttimedate = LocalDateTime.parse("2013-12-18T14:30");
+    private LocalDateTime startdatetime = LocalDateTime.parse("2013-12-18T14:30");
 
     @Column(nullable = false)
-    private LocalDateTime endtimedate = LocalDateTime.parse("2013-12-18T14:30");
+    private LocalDateTime enddatetime = LocalDateTime.parse("2013-12-18T14:30");
 
     @Column(nullable = false)
     private String location;
@@ -45,10 +45,10 @@ public class Reservation {
 
     public Reservation() {}
 
-    public Reservation(String location, String starttimedate, String endtimedate, DJ dj, User user, String status){
+    public Reservation(String location, String startdatetime, String enddatetime, DJ dj, User user, String status){
         this.location = location;
-        this.starttimedate = LocalDateTime.parse(starttimedate);
-        this.endtimedate = LocalDateTime.parse(endtimedate);
+        this.startdatetime = LocalDateTime.parse(startdatetime);
+        this.enddatetime = LocalDateTime.parse(enddatetime);
         this.dj = dj;
         this.user = user;
     }
@@ -59,8 +59,8 @@ public class Reservation {
                 "reservationId=" + reservationId +
                 ", creationTime=" + creationTime +
                 ", location='" + location + '\'' +
-                ", starttimedate=" + starttimedate +
-                ", endtimedate=" + endtimedate +
+                ", startdatetime=" + startdatetime +
+                ", enddatetime=" + enddatetime +
                 ", dj=" + dj +
                 ", user=" + user +
                 '}';
