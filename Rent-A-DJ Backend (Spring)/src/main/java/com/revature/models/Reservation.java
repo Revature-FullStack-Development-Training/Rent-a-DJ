@@ -48,13 +48,13 @@ public class Reservation {
 
     @Override
     public String toString() {
-        return "User{" +
-                "userId=" + userId +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", username='" + username + '\'' +
-                ", password='" + password + '\'' +
-                ", role='" + role + '\'' +
+        return "Reservation{" +
+                "reservationId=" + reservationId +
+                ", creationTime=" + creationTime +
+                ", location='" + location + '\'' +
+                ", timedate=" + timedate +
+                ", dj=" + dj +
+                ", user=" + user +
                 '}';
     }
 }
