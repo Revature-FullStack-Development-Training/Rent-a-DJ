@@ -27,7 +27,10 @@ public class Reservation {
     private String location;
 
     @Column(nullable = false)
-    private LocalDateTime timedate = LocalDateTime.parse("2013-12-18T14:30");
+    private LocalDateTime starttimedate = LocalDateTime.parse("2013-12-18T14:30");
+
+    @Column(nullable = false)
+    private LocalDateTime endtimedate = LocalDateTime.parse("2013-12-18T14:30");
 
     @OneToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "DJId",referencedColumnName = "DJId") //this links our FK to the PK in User (has to be the same amount!!!)
@@ -39,9 +42,10 @@ public class Reservation {
 
     public Reservation() {}
 
-    public Reservation(String location, String timedate, DJ dj, User user){
+    public Reservation(String location, String starttimedate, String endtimedate, DJ dj, User user){
         this.location = location;
-        this.timedate = LocalDateTime.parse(timedate);
+        this.starttimedate = LocalDateTime.parse(starttimedate);
+        this.endtimedate = LocalDateTime.parse(endtimedate);
         this.dj = dj;
         this.user = user;
     }
@@ -52,7 +56,8 @@ public class Reservation {
                 "reservationId=" + reservationId +
                 ", creationTime=" + creationTime +
                 ", location='" + location + '\'' +
-                ", timedate=" + timedate +
+                ", starttimedate=" + starttimedate +
+                ", endtimedate=" + endtimedate +
                 ", dj=" + dj +
                 ", user=" + user +
                 '}';
