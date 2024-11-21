@@ -56,9 +56,8 @@ public class UserController {
             throw new IllegalArgumentException("No user found to delete");
         }
 
-        User userToDelete = users.get(0);
-        userService.deleteUser(userToDelete.getUserId());
-        return ResponseEntity.ok(userToDelete);
+        User userToDelete = users.getFirst();
+        return ResponseEntity.ok(userService.deleteUser(userToDelete.getUserId()));
     }
 
     @ExceptionHandler(IllegalArgumentException.class)
