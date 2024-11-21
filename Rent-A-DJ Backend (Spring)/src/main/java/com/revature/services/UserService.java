@@ -71,11 +71,12 @@ public class UserService {
             throw new IllegalArgumentException("Please search for a valid username!");
         }
 
-        //TODO: we could check if the returned user is null and throw an exception
-        //if(userDAO.findByUsername(username) == null){throw Exp}
-
+        List<User> users = uDAO.findByUsername(username);
+        if(users.isEmpty()){
+            throw new IllegalArgumentException("No user found with username: " + username);
+        }
         //findByUsername is a method WE DEFINED in the UserDAO (but didn't have to implement!)
-        return uDAO.findByUsername(username);
+        return users;
     }
     public List<User> getUserByUsernameStartingWith(String username){
 
