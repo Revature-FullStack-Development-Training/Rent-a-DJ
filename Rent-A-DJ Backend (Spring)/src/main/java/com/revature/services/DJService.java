@@ -2,7 +2,6 @@ package com.revature.services;
 
 import com.revature.daos.DJDAO;
 import com.revature.models.DJ;
-import com.revature.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
