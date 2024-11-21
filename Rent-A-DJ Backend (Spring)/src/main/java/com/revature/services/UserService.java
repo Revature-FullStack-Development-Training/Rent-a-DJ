@@ -28,6 +28,9 @@ public class UserService {
         this.uDAO = userDAO;
     }
 
+    /* TODO: pass this a user instead of individual fields (we can send in a user from the
+       TODO: controller instead of the users fields) */
+
     //This method inserts new Users into the DB
     public User registerUser(String firstName, String lastName, String username, String password, String role){
         User newUser = new User(0, firstName, lastName, username, password, role);
@@ -84,9 +87,11 @@ public class UserService {
         if(username == null || username.isBlank()){
             return uDAO.findAll();
         }
-
-        //TODO: we could check if the returned user is null and throw an exception
-        //if(userDAO.findByUsername(username) == null){throw Exp}
+        //we could check if the returned user is null and throw an exception
+        else if(uDAO.findByUsername(username) == null)
+        {
+            throw new IllegalArgumentException("No username found starting with: " + username);
+        }
 
         //findByUsername is a method WE DEFINED in the UserDAO (but didn't have to implement!)
         return uDAO.findByUsernameStartingWith(username);
