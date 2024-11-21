@@ -1,6 +1,7 @@
 package com.revature.daos;
 
 import com.revature.models.DJ;
+import com.revature.models.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -16,6 +17,8 @@ public interface DJDAO extends JpaRepository<DJ, Integer> {
     DJ findByDJId(int DJId);
 
     List<DJ> findByFirstNameAndLastName(String firstName, String lastName);
+
+    List<DJ> findByUsername(String username);
 
     List<DJ> findByDJname(String DJname);
 

@@ -36,11 +36,12 @@ public class DJ {
 
     public DJ() {}
 
-    public DJ(int userid, String firstName, String lastName, String username, String password, String role) {
+    public DJ(int userid, String firstName, String lastName, String username, String password, double rate) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.username = username;
         this.password = password;
+        this.rate = rate;
     }
 
     public int getDjId() {
@@ -101,11 +102,14 @@ public class DJ {
 
     @Override
     public String toString() {
-        return "User{" +
+        return "DJ{" +
+                "djId=" + djId +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
+                ", rate=" + rate +
+                ", reservations=" + reservations +
                 '}';
     }
 }

@@ -21,6 +21,32 @@ public class DJService {
 
     //User Stories-----------------------------------
 
+    //This method inserts new DJs into the DB
+    public DJ registerDJ(String firstName, String lastName, String username,
+                           String password, double rate) {
+        DJ newDJ = new DJ(0, firstName, lastName, username, password, rate);
+        //TODO: Check that the username is unique (get dj by username, see if it's null)
+        //DJ dj = findByUsername(newDJ.getUsername());
+        //If dj is not null, throw an exception because the username already exists
+        if(!dDAO.findByUsername(newDJ.getUsername()).isEmpty()){
+            //It will be the Controller's job to handle this
+            throw new IllegalArgumentException("Username already exists!");
+        }
+        //Make sure the username is present in the new User (TODO: password too)
+        if(newDJ.getUsername() == null || newDJ.getUsername().isBlank()) {
+            //It will be the Controller's job to handle this
+            throw new IllegalArgumentException("Username cannot be empty!");
+        }
+
+        if(newDJ.getPassword() == null || newDJ.getPassword().isBlank()){
+            //It will be the Controller's job to handle this
+            throw new IllegalArgumentException("Password cannot be empty!");
+        }
+        //.save() is the JPA method to insert data into the DB. We can also use this for updates
+        //It also returns the saved object, so we can just return the method call. Convenient!
+        return dDAO.save(newDJ);
+    }
+
     //A method to change a DJ's payrate
     public DJ changeRate(int djId, Double newRate){
 
