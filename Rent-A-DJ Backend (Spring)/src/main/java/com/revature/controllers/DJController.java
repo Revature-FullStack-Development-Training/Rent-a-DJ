@@ -43,7 +43,7 @@ public class DJController {
 
     // This handles rate change for the DJ
     @PatchMapping("/{djId}/rate")
-    public ResponseEntity<DJ> updateRate(@PathVariable int djId,
+    public ResponseEntity<DJ> changeRate(@PathVariable int djId,
                                          @RequestBody double rate) {
         DJ dj = djService.changeRate(djId, rate);
         return ResponseEntity.ok(dj);
