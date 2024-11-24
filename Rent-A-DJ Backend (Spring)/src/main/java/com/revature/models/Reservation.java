@@ -11,7 +11,7 @@ import java.time.ZoneId;
 
 @Component //This Class will be registered as a Spring Bean
 @Entity //This Class will be created as a table in the DB (In other words, a DB ENTITY)
-@Table(schema="project2", name = "reservations") //@Table lets us set properties like table name. THIS IS NOT WHAT MAKES IT A TABLE
+@Table(name = "reservations") //@Table lets us set properties like table name. THIS IS NOT WHAT MAKES IT A TABLE
 public class Reservation {
 
     @Id //This makes the field the primary key
@@ -33,12 +33,12 @@ public class Reservation {
     @Column(nullable = false)
     private String status;
 
-    @OneToMany(fetch = FetchType.EAGER)
-    @JoinColumn(name = "djId",referencedColumnName = "djId") //this links our FK to the PK in User (has to be the same amount!!!)
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "djId") //this links our FK to the PK in User (has to be the same amount!!!)
     private DJ dj;
 
-    @OneToMany(fetch = FetchType.EAGER)
-    @JoinColumn(name = "userId",referencedColumnName = "userId") //this links our FK to the PK in User (has to be the same amount!!!)
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "userId") //this links our FK to the PK in User (has to be the same amount!!!)
     private User user;
 
     public int getReservationId() {

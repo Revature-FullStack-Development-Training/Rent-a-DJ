@@ -1,11 +1,11 @@
 package com.revature.daos;
 
 import com.revature.models.DJ;
-import com.revature.models.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 /*By extending JpaRepository, we get access to various DAO methods that we don't need to write
 
@@ -14,15 +14,14 @@ import java.util.List;
     -The datatype of the Primary Key field in the Model (Integer => DJId in this case */
 @Repository //1 of the 4 stereotype annotations. It registers this class as a Spring Bean
 public interface DJDAO extends JpaRepository<DJ, Integer> {
-    DJ findByDJId(int DJId);
+    DJ findByDjId(int djId);
 
     List<DJ> findByFirstNameAndLastName(String firstName, String lastName);
 
-    DJ findByUsername(String username);
+    Optional<DJ> findByUsername(String username);
 
-    List<DJ> findByDJname(String DJname);
+//    List<DJ> findByDJname(String DJname);
+//
+//    List<DJ> findByDJnameStartingWith(String DJname);
 
-    List<DJ> findByDJnameStartingWith(String DJname);
-
-    List<DJ> findByRole(String role);
 }

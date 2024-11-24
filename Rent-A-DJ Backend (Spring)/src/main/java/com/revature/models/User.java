@@ -8,7 +8,7 @@ import java.util.List;
 
 @Component //This Class will be registered as a Spring Bean
 @Entity //This Class will be created as a table in the DB (In other words, a DB ENTITY)
-@Table(schema="project2", name = "users") //@Table lets us set properties like table name. THIS IS NOT WHAT MAKES IT A TABLE
+@Table(name = "users") //@Table lets us set properties like table name. THIS IS NOT WHAT MAKES IT A TABLE
 public class User {
 
     @Id //This makes the field the primary key
@@ -37,6 +37,7 @@ public class User {
     public User() {}
 
     public User(int userid, String firstName, String lastName, String username, String password, String role) {
+        this.userId = userid;
         this.firstName = firstName;
         this.lastName = lastName;
         this.username = username;

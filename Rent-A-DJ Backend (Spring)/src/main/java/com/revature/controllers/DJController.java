@@ -16,12 +16,12 @@ import java.util.Map;
 public class DJController {
 
     private DJService djService;
-    private DJDAO djDAO;
+    //private DJDAO djDAO;
 
     @Autowired
-    public DJController(DJService djService, DJDAO djDAO) {
+    public DJController(DJService djService){ //, DJDAO djDAO) {
         this.djService = djService;
-        this.djDAO = djDAO;
+        //this.djDAO = djDAO;
     }
 
     // This handles registering a new DJ
@@ -52,7 +52,7 @@ public class DJController {
     // This handles removing a DJ from DB by username
     @DeleteMapping("/{username}")
     public ResponseEntity<DJ> removeDJ(@PathVariable String username) {
-        DJ djToDelete = djDAO.findByUsername(username);
+        DJ djToDelete = djService.findByUsername(username);
 
         djService.removeDJ(djToDelete.getDjId());
         return ResponseEntity.ok(djToDelete);
