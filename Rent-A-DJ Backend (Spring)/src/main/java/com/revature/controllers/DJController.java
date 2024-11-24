@@ -48,4 +48,18 @@ public class DJController {
         DJ dj = djService.changeRate(djId, rate);
         return ResponseEntity.ok(dj);
     }
+
+    // This handles removing a DJ from DB by username
+    @DeleteMapping("/{username}")
+    public ResponseEntity<DJ> removeDJ(@PathVariable String username) {
+        DJ djToDelete = djDAO.findByUsername(username);
+
+        djService.removeDJ(djToDelete.getDjId());
+        return ResponseEntity.ok(djToDelete);
+    }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<String> handleIllegalArgument(IllegalArgumentException e) {
+        return ResponseEntity.status(400).body(e.getMessage());
+    }
 }

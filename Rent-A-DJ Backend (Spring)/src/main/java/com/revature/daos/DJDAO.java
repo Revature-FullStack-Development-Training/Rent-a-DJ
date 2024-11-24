@@ -18,7 +18,7 @@ public interface DJDAO extends JpaRepository<DJ, Integer> {
 
     List<DJ> findByFirstNameAndLastName(String firstName, String lastName);
 
-    List<DJ> findByUsername(String username);
+    DJ findByUsername(String username);
 
     List<DJ> findByDJname(String DJname);
 
