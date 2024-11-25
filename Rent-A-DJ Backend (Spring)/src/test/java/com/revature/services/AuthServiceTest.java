@@ -39,7 +39,7 @@ public class AuthServiceTest {
     @Test
     void testLoginSuccess() {
         // Given: A user is found by username and password
-        User user = new User(1, "testUser", "Test", "testUser", "password123", "USER");
+        User user = new User(1, "testUser", "Test", "testUser", "password123", "default user");
         when(aDAO.findByUsernameAndPassword(loginDTO.getUsername(), loginDTO.getPassword())).thenReturn(user);
 
         // When: The login method is called
