@@ -2,6 +2,7 @@ package com.revature.services;
 
 import com.revature.controllers.AuthController;
 import com.revature.daos.AuthDAO;
+import com.revature.models.DJ;
 import com.revature.models.DTOs.LoginDTO;
 import com.revature.models.DTOs.OutgoingUserDTO;
 import com.revature.models.User;
@@ -12,6 +13,9 @@ import org.springframework.stereotype.Service;
 @Service
 public class AuthService {
 
+    @Autowired
+    private DJService djService;
+
     //autowire the DAO
 
     private AuthDAO aDAO;
@@ -21,26 +25,23 @@ public class AuthService {
         this.aDAO = aDAO;
     }
 
-    public OutgoingUserDTO login(LoginDTO lDTO, HttpSession session){
+    public OutgoingUserDTO login(LoginDTO lDTO, HttpSession session) {
 
         //Use the DTO data to find a user in the DB (through the DAO)
         User u = aDAO.findByUsernameAndPassword(lDTO.getUsername(), lDTO.getPassword());
 
         //If no user is found, throw an Exception
-        if(u == null){
-            throw new IllegalArgumentException("No user found with those credentials!");
-        }
+        if (u != null) {
+            //If a user is found, login was successful! Initialize our session
+            //Remember we're using the Session that lives on the Controller layer
+            AuthController.session = session;
 
-        //If a user is found, login was successful! Initialize our session
-        //Remember we're using the Session that lives on the Controller layer
-        AuthController.session = session;
+            //Store the User info in the session
+            AuthController.session.setAttribute("userId", u.getUserId());
+            AuthController.session.setAttribute("username", u.getUsername());
+            AuthController.session.setAttribute("role", u.getRole());
 
-        //Store the User info in the session
-        AuthController.session.setAttribute("userId", u.getUserId());
-        AuthController.session.setAttribute("username", u.getUsername());
-        AuthController.session.setAttribute("role", u.getRole());
-
-        //Why store all this user info in session attributes?
+            //Why store all this user info in session attributes?
 
         /* -It helps store user info that we can use to check if:
             -they're logged in
@@ -49,10 +50,30 @@ public class AuthService {
             -simplify our URLs!
                 ex: use the stored userId in "findBy" methods so we don't need to include it in the URL */
 
-        //Process the User into an OutgoingUserDTO and return it!
-        return new OutgoingUserDTO(u.getUserId(), u.getUsername(), u.getRole());
+            //Process the User into an OutgoingUserDTO and return it!
+            return new OutgoingUserDTO(u.getUserId(), u.getUsername(), u.getRole());
+        }
+
+        // If no user is found, check the DJ database
+        try {
+            DJ dj = djService.findByUsername(lDTO.getUsername());
+
+            if (dj != null && dj.getPassword().equals(lDTO.getPassword())) {
+                // DJ login successful
+                AuthController.session = session;
+                AuthController.session.setAttribute("djId", dj.getDjId());
+                AuthController.session.setAttribute("username", dj.getUsername());
+                AuthController.session.setAttribute("role", "dj");
+
+                return new OutgoingUserDTO(dj.getDjId(), dj.getUsername(), "dj");
+            }
+        } catch (IllegalArgumentException e) {
+            // Handle case where no DJ is found, fall through to the exception below
+        }
+
+        // If neither user nor DJ is found, throw an exception
+        throw new IllegalArgumentException("No user or DJ found with those credentials!");
 
     }
-
-
 }
+
