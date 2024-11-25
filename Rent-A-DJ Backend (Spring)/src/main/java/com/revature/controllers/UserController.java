@@ -39,7 +39,7 @@ public class UserController {
 
     @GetMapping("/username")
     public ResponseEntity<User> getUserByUsername(@RequestParam String username) {
-        List<User> u = userService.getUserByUsername(username);
+        User u = userService.getUserByUsername(username);
         return ResponseEntity.ok((User) u);
     }
 
@@ -51,13 +51,11 @@ public class UserController {
 
     @DeleteMapping("/users/{username}")
     public ResponseEntity<User> deleteUser(@PathVariable String username) {
-        List<User> users = userService.getUserByUsername(username);
-        if (users.isEmpty()) {
-            throw new IllegalArgumentException("No user found to delete");
-        }
+        User userToDelete = userService.getUserByUsername(username);
 
-        User userToDelete = users.getFirst();
-        return ResponseEntity.ok(userService.deleteUser(userToDelete.getUserId()));
+        userService.deleteUser(userToDelete.getUserId());
+
+        return ResponseEntity.ok(userToDelete);
     }
 
     @ExceptionHandler(IllegalArgumentException.class)
