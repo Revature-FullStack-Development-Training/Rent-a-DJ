@@ -12,13 +12,33 @@ export const ReservationTable:React.FC = () => {
         if(user.loggedRole === "admin")
         {
             getAllReservations()
-        } else {
+        } else if(user.loggedRole === "user") {
             getReservationsByUsername()
+        } else if(user.loggedRole === "dj") {
+            getReservationsByDJ()
         }
     }, [])
 
     const getAllReservations = async () => {
         const response = await axios.get("http://localhost:7777/reservations")
+        .then(
+            (response) => {
+                setReservations(response.data)
+            }
+        )
+    }
+
+    const getAllPendingReservations = async () => {
+        const response = await axios.get("http://localhost:7777/reservations/pending")
+        .then(
+            (response) => {
+                setReservations(response.data)
+            }
+        )
+    }
+
+    const getReservationsByDJ = async () => {
+        const response = await axios.get("http://localhost:7777/reservations/dj/" + user.loggedID + "/username/" + user.loggedUsername)
         .then(
             (response) => {
                 setReservations(response.data)
@@ -35,8 +55,25 @@ export const ReservationTable:React.FC = () => {
         )
     }
 
+    const getPendingReservationsByUsername = async () => {
+        const response = await axios.get("http://localhost:7777/reservations/user/" + user.loggedUsername + "/pending")
+        .then(
+            (response) => {
+                setReservations(response.data)
+            }
+        )
+    }
+
     return(
         <Container>
+            {user.loggedRole === 'user' &&
+            <Button className="btn-warning" onClick={getPendingReservationsByUsername}>pending reimbursements</Button>}
+            {user.loggedRole === 'user' &&
+            <Button className="btn-primary" onClick={getReservationsByUsername}>all reimbursements</Button>}
+            {user.loggedRole === 'admin' &&
+            <Button className="btn-warning" onClick={getAllPendingReservations}>pending reimbursements</Button>}
+            {user.loggedRole === 'admin' &&
+            <Button className="btn-primary" onClick={getAllReservations}>all reimbursements</Button>}
 
             <Table>
                 <thead>

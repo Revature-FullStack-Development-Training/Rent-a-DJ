@@ -53,8 +53,10 @@ export const Login:React.FC = () => {
 
                 if(user.loggedRole === "admin"){
                     navigate("/admins")
-                } else {
+                } else if(user.loggedRole === "user") {
                     navigate("/users")
+                } else {
+                    navigate("/djs")
                 }
 
             }
