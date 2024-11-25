@@ -36,9 +36,9 @@ export const DJTable: React.FC = () => {
             <tbody>
                 {DJs.map((DJ:any)=>(
                     <tr>
-                        <td>{DJ.dj_id}</td>
-                        <td>{DJ.first_name}</td>
-                        <td>{DJ.last_name}</td>
+                        <td>{DJ.djId}</td>
+                        <td>{DJ.firstName}</td>
+                        <td>{DJ.lastName}</td>
                         <td>{DJ.rate}</td>
                         <td>{DJ.username}</td>
                     </tr>
