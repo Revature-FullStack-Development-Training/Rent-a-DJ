@@ -8,6 +8,7 @@ import { Register } from "./Components/LoginRegister/Register";
 import { UserContainer } from "./Components/User/UserContainer";
 import { AdminContainer } from "./Components/Admin/AdminContainer";
 import { UserContext, useUserContext } from "./context";
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
 

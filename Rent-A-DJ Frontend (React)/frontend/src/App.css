@@ -36,3 +36,42 @@
     transform: rotate(360deg);
   }
 }
+
+#regForm {
+  background-color: rgb(255, 255, 255);
+  margin-top: 50px;
+  padding: 5%;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.5);
+  width: 100%; /* Make the form take full width */
+  max-width: 500px; /* Set a maximum width */
+}
+
+@media (max-width: 576px) {
+  #regForm {
+    padding: 10%; /* Increase padding for smaller screens */
+  }
+}
+
+.form-group {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.form-group input,
+.form-group select {
+    flex: 1;
+}
+
+.rounded-input {
+    border-radius: 8px; /* Adjust the radius as needed */
+    padding: 8px; /* Optional: Add padding for better appearance */
+    border: 1px solid #ccc; /* Optional: Add border for better appearance */
+}
+
+.button-group {
+  display: flex;
+  justify-content: center;
+  gap: 10%; /* Adjust the gap as needed */
+}
+
