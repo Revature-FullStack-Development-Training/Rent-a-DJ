@@ -18,7 +18,7 @@ export const ReservationTable:React.FC = () => {
     }, [])
 
     const getAllReservations = async () => {
-        const response = await axios.get("http://localhost:7777//reservations")
+        const response = await axios.get("http://localhost:7777/reservations")
         .then(
             (response) => {
                 setReservations(response.data)
