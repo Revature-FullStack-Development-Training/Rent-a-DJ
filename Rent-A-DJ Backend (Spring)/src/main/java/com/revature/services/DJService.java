@@ -42,18 +42,12 @@ public class DJService {
                          String password, double rate) {
         DJ newDJ = new DJ(0, firstName, lastName, username, password, rate);
 
-        //TODO: someone backend please verify
-        //Band-aid optional to get runnable for front end
-        Optional<DJ> oDJ = dDAO.findByUsername(username);
+        // Check if the username already exists in the database
+        dDAO.findByUsername(username).ifPresent(dj -> {
+            throw new IllegalArgumentException("Username already exists!"); // Lambda expression, basically says if optional from ifPresent() contains a DJ object, then that username is already taken and throws exception.
+        });
 
-        //TODO: Check that the username is unique (get dj by username, see if it's null)
-        //DJ dj = findByUsername(newDJ.getUsername());
-        //If dj is not null, throw an exception because the username already exists
-        if(!oDJ.isEmpty()){
-            //It will be the Controller's job to handle this
-            throw new IllegalArgumentException("Username already exists!");
-        }
-        //Make sure the username is present in the new User (TODO: password too)
+        //Make sure the username is present in the new User
         if(newDJ.getUsername() == null || newDJ.getUsername().isBlank()) {
             //It will be the Controller's job to handle this
             throw new IllegalArgumentException("Username cannot be empty!");
@@ -79,7 +73,7 @@ public class DJService {
             throw new IllegalArgumentException("DJ with DJ ID: " + djId + " was not found!");
         }
         //check that the rate isn't blank
-        else if (dj.getRate() == 0 || dj.getPassword() == null){
+        if (newRate == 0 ){
             throw new IllegalArgumentException("Rate cannot be 0!");
         }
         else {

@@ -1,9 +1,12 @@
 import axios from "axios"
-import { useState } from "react"
+import { useContext, useState } from "react"
 import { Button, Container, Form } from "react-bootstrap"
 import { useNavigate } from "react-router-dom"
+import { UserContext, useUserContext } from "../../context"
 
 export const Login:React.FC = () => {
+
+    let user = useUserContext();
 
     const navigate = useNavigate();
 
@@ -12,11 +15,11 @@ export const Login:React.FC = () => {
         password:""
     });
 
-    const[loggedInUser, setloggedInUser] = useState({
-        loggedID:0,
-        loggedRole:"",
-        loggedUsername:"asdfasdf"
-    });
+    // const[loggedInUser, setloggedInUser] = useState({
+    //     role:"",
+    //     userID:0,
+    //     username:"asdfasdfasdf"
+    // });
 
     const storeValues = (input:any) => {
 
@@ -36,16 +39,22 @@ export const Login:React.FC = () => {
 
                 console.log(response.data)
 
+                user.loggedRole = response.data.role
+                user.loggedID = response.data.userId
+                user.loggedUsername = response.data.username
+
                 //saving the logged in user data globally
-                setloggedInUser(response.data)
+                //setloggedInUser(response.data)
+
+                console.log(user)
 
                 //greet the user
-                alert("Welcome, " + response.data.username)
+                alert("Welcome, " + user.loggedUsername)
 
-                if(loggedInUser.loggedRole === "admin"){
-                    navigate("/admins", {state: {loggedInUser}})
+                if(user.loggedRole === "admin"){
+                    navigate("/admins")
                 } else {
-                    navigate("/users", {state: {loggedInUser}})
+                    navigate("/users")
                 }
 
             }

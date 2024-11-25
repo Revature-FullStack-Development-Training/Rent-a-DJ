@@ -14,8 +14,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class) // Enables Mockito in test class, allowing the use of @Mock and @InjectMocks annotations.
 public class AuthServiceTest {
@@ -54,5 +53,23 @@ public class AuthServiceTest {
         assertEquals(user.getUserId(), result.getUserId());
         assertEquals(user.getUsername(), result.getUsername());
         assertEquals(user.getRole(), result.getRole());
+    }
+
+    @Test
+    void testLoginWithInvalidCredentials() {
+        // Given: A LoginDTO with invalid username and password
+        LoginDTO invalidLoginDTO = new LoginDTO("invalidUser", "wrongPassword");
+
+        // Mock the DAO to return null when looking up the invalid credentials
+        when(aDAO.findByUsernameAndPassword(invalidLoginDTO.getUsername(), invalidLoginDTO.getPassword())).thenReturn(null);
+
+        // When: The login method is called with invalid credentials
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> authService.login(invalidLoginDTO, session));
+
+        // Then: Ensure the exception message is the expected one
+        assertEquals("No user found with those credentials!", exception.getMessage());
+
+        // Verify that session was not modified since the login failed
+        verify(session, times(0)).setAttribute(anyString(), any());
     }
 }

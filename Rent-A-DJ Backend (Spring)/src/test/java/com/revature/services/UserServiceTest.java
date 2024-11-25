@@ -28,7 +28,7 @@ public class UserServiceTest {
     }
 
     @Test
-    void canGetUserByUsername() { // Tests getUserByUsername method
+    void canGetUserByUsernameTest() { // Tests getUserByUsername method
         // Test should pass if User is found with username
         String username = "user123";
 
@@ -49,7 +49,7 @@ public class UserServiceTest {
         verify(userDAO).findByUsername(username);  // Verify the DAO method was called
     }
     @Test
-    void getUserByUsernameThrowsExceptionWhenUsernameIsBlank() {// Tests getUserByUsername method
+    void getUserByUsernameThrowsExceptionWhenUsernameIsBlankTest() {// Tests getUserByUsername method
         // Test when the username is blank
         String username = "";
 
@@ -65,7 +65,7 @@ public class UserServiceTest {
     }
 
     @Test
-    void canRegisterUser() { //tests registerUser method
+    void canRegisterUserTest() { //tests registerUser method
 
         // Create user to register
         User newUser = new User(1, "testUser", "Test", "testUser", "password123", "default user");
@@ -101,7 +101,7 @@ public class UserServiceTest {
     }
 
     @Test
-    void registerUserWithBlankUsernameThrowsException() { // Tests registerUser method
+    void registerUserWithBlankUsernameThrowsExceptionTest() { // Tests registerUser method
         // Act
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
                 () -> underTest.registerUser("Test", "User", "", "password123", "default user"));
@@ -116,7 +116,7 @@ public class UserServiceTest {
 
 
     @Test
-    void canDeleteUser() { // Tests deleteUser method
+    void canDeleteUserTest() { // Tests deleteUser method
         // id to delete
         int id = 1;
 
@@ -135,7 +135,7 @@ public class UserServiceTest {
     }
 
     @Test
-    void deletingUserWithInvalidIdThrowsException() { // Tests deleteUser method
+    void deletingUserWithInvalidIdThrowsExceptionTest() { // Tests deleteUser method
         // Arrange
         int invalidId = -1;
 
@@ -147,7 +147,7 @@ public class UserServiceTest {
     }
 
     @Test
-    void canGetUserByUsernameStartingWithFoundUser() { // Tests getUserByUsernameStartingWith method
+    void canGetUserByUsernameStartingWithFoundUserTest() { // Tests getUserByUsernameStartingWith method
         // Test should pass if User is found with username
         String username = "user";
 
@@ -172,7 +172,7 @@ public class UserServiceTest {
     }
 
     @Test
-    void shouldThrowExceptionIfNoUsersFound() { // Tests getUserByUsernameStartingWith method
+    void shouldThrowExceptionIfNoUsersFoundTest() { // Tests getUserByUsernameStartingWith method
         // Tests the behavior when no users are found starting with the given username:
         // It should throw an IllegalArgumentException.
         String username = "nonexistent";
@@ -185,7 +185,7 @@ public class UserServiceTest {
     }
 
     @Test
-    void canGetAllUsers() {
+    void canGetAllUsersTest() {
         // Act: Call the method being tested
         underTest.getAllUsers();
 
@@ -193,7 +193,7 @@ public class UserServiceTest {
         verify(userDAO).findAll();
     }
     @Test
-    void canGetAllUsersWithData() {
+    void canGetAllUsersWithDataTest() {
         // Create a list of mock users
         List<User> mockUsers = List.of(
                 new User(1, "John", "Doe", "user123", "password", "default user"),

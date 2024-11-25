@@ -25,4 +25,12 @@ public class AuthAspect {
             throw new IllegalArgumentException("You must be an admin to do this!");
         }
     }
+
+    @Before("@annotation(com.revature.aspects.DJOnly)")
+    public void checkDJ() {
+        if (AuthController.session == null ||
+                !AuthController.session.getAttribute("role").equals("dj")) {
+            throw new IllegalArgumentException("You must be a DJ to do this!");
+        }
+    }
 }
