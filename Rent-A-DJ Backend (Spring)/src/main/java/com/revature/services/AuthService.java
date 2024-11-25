@@ -28,7 +28,6 @@ public class AuthService {
 
         //If no user is found, throw an Exception
         if(u == null){
-            //TODO: we could have made a custom LoginFailed Exception, but no time
             throw new IllegalArgumentException("No user found with those credentials!");
         }
 
