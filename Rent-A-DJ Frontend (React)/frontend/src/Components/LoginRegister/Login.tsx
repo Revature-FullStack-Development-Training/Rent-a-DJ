@@ -7,6 +7,6 @@ export const Login:React.FC = () => {
 
 
     return (
-        <></>
+        <Container></Container>
     )
 }
