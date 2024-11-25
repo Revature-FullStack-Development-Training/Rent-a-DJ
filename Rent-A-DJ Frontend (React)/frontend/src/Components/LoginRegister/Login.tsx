@@ -15,7 +15,7 @@ export const Login:React.FC = () => {
     const[loggedInUser, setloggedInUser] = useState({
         loggedID:0,
         loggedRole:"",
-        loggedUsername:""
+        loggedUsername:"asdfasdf"
     });
 
     const storeValues = (input:any) => {
@@ -40,7 +40,7 @@ export const Login:React.FC = () => {
                 setloggedInUser(response.data)
 
                 //greet the user
-                //alert("Welcome, " + loggedInUser.loggedUsername)
+                alert("Welcome, " + response.data.username)
 
                 if(loggedInUser.loggedRole === "admin"){
                     navigate("/admins", {state: {loggedInUser}})
