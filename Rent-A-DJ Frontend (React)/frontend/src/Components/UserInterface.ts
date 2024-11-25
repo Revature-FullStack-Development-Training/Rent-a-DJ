@@ -1,5 +1,5 @@
 export interface User {
-    loggedID:number;
     loggedRole:string;
+    loggedID:number;
     loggedUsername:string;
 }
