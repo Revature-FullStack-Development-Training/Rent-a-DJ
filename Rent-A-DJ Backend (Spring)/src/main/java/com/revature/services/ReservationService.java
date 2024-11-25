@@ -100,7 +100,9 @@ public class ReservationService {
         //not much error handling in a get all
         return rDAO.findAll();
     }
-    public List<Reservation> getReservationsByDJIdAndUsername(int djId, String username) {
-        return rDAO.findBydjIdAndUsername(djId, username);
+
+    public List<Reservation> getReservationsByDjIdAndUsername(int djId, String username) {
+        return rDAO.findByDj_DjIdAndDj_Username(djId, username);
     }
+
 }

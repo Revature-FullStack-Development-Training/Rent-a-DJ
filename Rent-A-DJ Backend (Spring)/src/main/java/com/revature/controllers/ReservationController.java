@@ -62,4 +62,10 @@ public class ReservationController {
         List<Reservation> pendingReservations = reservationService.getAllPendingReservations();
         return ResponseEntity.ok(pendingReservations);
     }
+
+    @GetMapping("/dj/{djId}/username/{username}")
+    public ResponseEntity<List<Reservation>> getReservationsByDj(@PathVariable int djId, @PathVariable String username) {
+        List<Reservation> reservations = reservationService.getReservationsByDjIdAndUsername(djId, username);
+        return ResponseEntity.ok(reservations);
+    }
 }
