@@ -13,6 +13,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/djs")
+@CrossOrigin
 public class DJController {
 
     private DJService djService;
