@@ -2,6 +2,7 @@ package com.revature.models.DTOs;
 
 public class OutgoingDJDTO {
 
+    //fields based on registerDJ() in DJService
     private String firstName;
     private String lastName;
     private String username;

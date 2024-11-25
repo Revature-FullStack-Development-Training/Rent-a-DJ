@@ -8,6 +8,7 @@ import java.time.ZoneId;
 
 public class OutgoingReservationDTO {
 
+    //fields based on addReservation in ReservationService
     private String location;
     private String startdatetime;
     private String enddatetime;
