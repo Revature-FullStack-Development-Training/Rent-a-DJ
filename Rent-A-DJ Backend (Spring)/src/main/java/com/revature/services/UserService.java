@@ -34,22 +34,21 @@ public class UserService {
     //This method inserts new Users into the DB
     public User registerUser(String firstName, String lastName, String username, String password, String role){
         User newUser = new User(0, firstName, lastName, username, password, role);
-        //TODO: Check that the username is unique (get user by username, see if it's null)
+
+        //Make sure the username is present in the new User
+        if(newUser.getUsername() == null || newUser.getUsername().isBlank()) {
+            //It will be the Controller's job to handle this
+            throw new IllegalArgumentException("Username cannot be empty!");
+        }
+        if(newUser.getPassword() == null || newUser.getPassword().isBlank()){
+            //It will be the Controller's job to handle this
+            throw new IllegalArgumentException("Password cannot be empty!");
+        }
         //User u = findByUsername(newUser.getUsername());
         //If u is not null, throw an exception because the username already exists
         if(!uDAO.findByUsername(newUser.getUsername()).isEmpty()){
             //It will be the Controller's job to handle this
             throw new IllegalArgumentException("Username already exists!");
-        }
-        //Make sure the username is present in the new User (TODO: password too)
-        if(newUser.getUsername() == null || newUser.getUsername().isBlank()) {
-            //It will be the Controller's job to handle this
-            throw new IllegalArgumentException("Username cannot be empty!");
-        }
-
-        if(newUser.getPassword() == null || newUser.getPassword().isBlank()){
-            //It will be the Controller's job to handle this
-            throw new IllegalArgumentException("Password cannot be empty!");
         }
         //.save() is the JPA method to insert data into the DB. We can also use this for updates
         //It also returns the saved object, so we can just return the method call. Convenient!
@@ -57,44 +56,54 @@ public class UserService {
     }
 
     public User deleteUser(int userid) {
-        User u = uDAO.findByUserId(userid);
-        if (u == null) {
-            throw new IllegalArgumentException("No user found with id: " + userid);
+        if (userid < 0){
+            throw new IllegalArgumentException("ID must be greater than 0.");
         }
 
-        uDAO.deleteById(userid);
-        return u;
+        //Find the user ID - if it exists, delete it, otherwise IllegalArgException
+        User userToDelete = uDAO.findById(userid).orElseThrow(() ->
+                new IllegalArgumentException("No user found with id: " + userid));
+
+        uDAO.deleteById(userid); //Inherited from JpaRepository
+
+        return userToDelete;
     }
 
     //This method gets a user by username
-    public List<User> getUserByUsername(String username){
+    public User getUserByUsername(String username){
 
         //a little error handling
         if(username == null || username.isBlank()){
             throw new IllegalArgumentException("Please search for a valid username!");
         }
 
+        // Assuming findByUsername returns a List<User>
         List<User> users = uDAO.findByUsername(username);
-        if(users.isEmpty()){
+
+        // If no users are found, throw an exception
+        if (users.isEmpty()) {
             throw new IllegalArgumentException("No user found with username: " + username);
         }
-        //findByUsername is a method WE DEFINED in the UserDAO (but didn't have to implement!)
-        return users;
+        // Return the first (and only) user from the list
+        return users.getFirst();
     }
-    public List<User> getUserByUsernameStartingWith(String username){
 
-        //a little error handling
-        if(username == null || username.isBlank()){
-            return uDAO.findAll();
-        }
-        //we could check if the returned user is null and throw an exception
-        else if(uDAO.findByUsername(username) == null)
-        {
-            throw new IllegalArgumentException("No username found starting with: " + username);
+    public List<User> getUserByUsernameStartingWith(String username) {
+
+        // Handle null or blank input gracefully
+        if (username == null || username.isBlank()) {
+            throw new IllegalArgumentException("Please search for a valid username: ");
         }
 
-        //findByUsername is a method WE DEFINED in the UserDAO (but didn't have to implement!)
-        return uDAO.findByUsernameStartingWith(username);
+        // Find users whose usernames start with the given string
+        List<User> users = uDAO.findByUsernameStartingWith(username);
+
+        // If no users are found, throw an exception
+        if (users == null || users.isEmpty()) {
+            throw new IllegalArgumentException("No user found starting with: " + username);
+        }
+
+        return users;
     }
     //This method gets all users from the DB
     public List<User> getAllUsers(){
