@@ -42,11 +42,12 @@ public class DJController {
         return ResponseEntity.ok(allDJs);
     }
 
+    //Changed this, dont know if it breaks something else tho
     // This handles rate change for the DJ
     @PatchMapping("/{djId}/rate")
     public ResponseEntity<DJ> changeRate(@PathVariable int djId,
-                                         @RequestBody double rate) {
-        DJ dj = djService.changeRate(djId, rate);
+                                         @RequestBody Map<String, Double> rate) {
+        DJ dj = djService.changeRate(djId, rate.get("rate"));
         return ResponseEntity.ok(dj);
     }
 
