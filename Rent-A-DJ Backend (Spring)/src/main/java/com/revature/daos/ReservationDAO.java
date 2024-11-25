@@ -15,4 +15,5 @@ public interface ReservationDAO extends JpaRepository<Reservation, Integer> {
     List<Reservation> findByUser(User user);
     List<Reservation> findByStatus(String status);
     List<Reservation> findByUserAndStatus(User user, String status);
+    List<Reservation> findBydjIdAndUsername(int djId, String username);
 }
