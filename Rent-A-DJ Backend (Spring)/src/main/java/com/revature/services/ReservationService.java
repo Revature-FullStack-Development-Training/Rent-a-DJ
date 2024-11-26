@@ -123,6 +123,8 @@ public class ReservationService {
         }
         else if (r.get().getLocation().equals(newLocation)) {
             throw new IllegalArgumentException("Location is already " + newLocation + "!");
+        } else if (!r.get().getStatus().equals("pending")) {
+            throw new IllegalArgumentException("Can only change the location of pending reservations!");
         }
         //any other error handling goes above here
         else {
