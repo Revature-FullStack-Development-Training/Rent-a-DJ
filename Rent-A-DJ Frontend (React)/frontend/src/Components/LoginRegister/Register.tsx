@@ -41,11 +41,12 @@ export const Register: React.FC = () => {
             if (formData.role === 'dj') {
                 const response = await axios.post<{ data: any }>('http://localhost:7777/djs', formData);
                 console.log('DJ registered:', response.data);
+                navigate('/djs'); // Navigate to the DJs page after successful registration
             } else {
                 const response = await axios.post<{ data: any }>('http://localhost:7777/users', formData);
                 console.log('User registered:', response.data);
+                navigate('/users'); // Navigate to the users page after successful registration
             }
-            navigate('/users'); // Navigate to the users page after successful registration
         } catch (error) {
             console.error('Error registering user:', error);
         }
