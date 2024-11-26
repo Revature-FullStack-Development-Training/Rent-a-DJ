@@ -52,7 +52,7 @@ public class UserService {
         }
         //User u = findByUsername(newUser.getUsername());
         //If u is not null, throw an exception because the username already exists
-        if(!uDAO.findByUsername(newUser.getUsername()).isEmpty()){
+        if(uDAO.findByUsername(newUser.getUsername()) == null){
             logger.error("Validation failed: Username '{}' already exists", newUser.getUsername());
             //It will be the Controller's job to handle this
             throw new IllegalArgumentException("Username already exists!");
@@ -140,15 +140,15 @@ public class UserService {
         }
 
         // Assuming findByUsername returns a List<User>
-        List<User> users = uDAO.findByUsername(username);
+        User user = uDAO.findByUsername(username);
 
         // If no users are found, throw an exception
-        if (users.isEmpty()) {
+        if (user == null) {
             throw new IllegalArgumentException("No user found with username: " + username);
         }
         logger.info("Successfully found user with username: {}", username);
         // Return the first (and only) user from the list
-        return users.getFirst();
+        return user;
     }
 
     public List<User> getUserByUsernameStartingWith(String username) {
