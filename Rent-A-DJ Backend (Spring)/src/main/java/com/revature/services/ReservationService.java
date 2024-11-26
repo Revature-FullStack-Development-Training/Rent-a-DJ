@@ -62,20 +62,10 @@ public class ReservationService {
         }
     }
 
-    @Transactional
-    public Reservation resolveReservation(int id, String status) {
-        if (!(status.equals("pending") || status.equals("approved") || status.equals("denied"))) {
-            throw new IllegalArgumentException("Invalid status");
-        }
-
-        Reservation r = rDAO.findByReservationId(id);
-
-        if (r == null) {
-            throw new IllegalArgumentException("No reservation found with id: " + id);
-        } else {
-            r.setStatus(status);
-            return r;
-        }
+    public Reservation resolveReservation(int id, String status){
+        Reservation r = rDAO.findByReservationId(id).get();
+        r.setStatus(status);
+        return rDAO.save(r);
     }
 
     public List<Reservation> getUserReservations(String username) {
