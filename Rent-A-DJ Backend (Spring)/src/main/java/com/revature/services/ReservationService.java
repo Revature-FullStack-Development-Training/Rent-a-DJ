@@ -64,7 +64,7 @@ public class ReservationService {
     }
 
     public Reservation resolveReservation(int id, String status){
-        Reservation r = rDAO.findByReservationId(id).get();
+        Reservation r = rDAO.findByReservationId(id);
         r.setStatus(status);
         return rDAO.save(r);
     }
