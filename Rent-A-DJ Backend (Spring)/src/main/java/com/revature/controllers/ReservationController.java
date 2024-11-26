@@ -83,4 +83,11 @@ public class ReservationController {
         logger.info("Retrieved {} reservations for DJ ID: {} and user: {}", reservations.size(), djId, username);
         return ResponseEntity.ok(reservations);
     }
+
+    @PatchMapping("{reservationId}/location")
+    public ResponseEntity<Reservation> updateReservationLocation(@PathVariable int reservationId, @RequestBody String newLocation){
+        Reservation reservation = reservationService.updateReservationLocation(reservationId, newLocation);
+
+        return ResponseEntity.ok(reservation);
+    }
 }
