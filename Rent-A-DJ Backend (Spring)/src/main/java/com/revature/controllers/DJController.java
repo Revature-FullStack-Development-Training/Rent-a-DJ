@@ -61,8 +61,8 @@ public class DJController {
     }
 
     //handles password changes for the DJ
-    @PatchMapping("{djId}/password")
-    public ResponseEntity<DJ> changePassword(@PathVariable int djId, String password){
+    @PatchMapping("/{djId}/password")
+    public ResponseEntity<DJ> changePassword(@PathVariable int djId, @RequestBody String password){
         DJ dj = djService.changePassword(djId, password);
 
         logger.info("Successfully changed password for DJ with ID: {}", djId);
@@ -70,9 +70,9 @@ public class DJController {
     }
 
     //handles username changes for the DJ
-    @PatchMapping("{djId}/username")
-    public ResponseEntity<DJ> changeUsername(@PathVariable int djId, String password){
-        DJ dj = djService.changeUsername(djId, password);
+    @PatchMapping("/{djId}/username")
+    public ResponseEntity<DJ> changeUsername(@PathVariable int djId, @RequestBody String username){
+        DJ dj = djService.changeUsername(djId, username);
 
         logger.info("Successfully changed username for DJ with ID: {}", djId);
         return ResponseEntity.ok(dj);

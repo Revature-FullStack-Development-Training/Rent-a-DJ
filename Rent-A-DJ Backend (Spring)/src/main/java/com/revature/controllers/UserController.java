@@ -62,7 +62,7 @@ public class UserController {
 
     //handles password changes for the User
     @PatchMapping("{userId}/password")
-    public ResponseEntity<User> changePassword(@PathVariable int userId, String password){
+    public ResponseEntity<User> changePassword(@PathVariable int userId, @RequestBody String password){
         User user = userService.changePassword(userId, password);
 
         logger.info("Successfully changed password for user ID: {}", userId);
@@ -71,7 +71,7 @@ public class UserController {
 
     //handles username changes for the User
     @PatchMapping("{userId}/username")
-    public ResponseEntity<User> changeUsername(@PathVariable int userId, String password){
+    public ResponseEntity<User> changeUsername(@PathVariable int userId, @RequestBody String password){
         User user = userService.changeUsername(userId, password);
 
         logger.info("Successfully changed username for user ID: {}", userId);

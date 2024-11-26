@@ -151,7 +151,7 @@ public class DJService {
             throw new IllegalArgumentException("Username cannot be blank!");
         }
         else {
-            dj.setPassword(newUsername);
+            dj.setUsername(newUsername);
 
         }
         logger.info("DJ with ID: {} successfully update username to {}", djId, newUsername);
