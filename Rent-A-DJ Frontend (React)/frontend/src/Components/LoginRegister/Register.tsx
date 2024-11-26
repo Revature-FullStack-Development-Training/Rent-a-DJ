@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { Container } from 'react-bootstrap';
-//import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 
 export const Register: React.FC = () => {
@@ -52,7 +52,7 @@ export const Register: React.FC = () => {
     };
 
     return (
-        <Container className="mx-5">
+        <Container>
             <form onSubmit={handleSubmit} className="my-5 mx-auto" id="regForm">
             <h2 className="text-center">Register</h2>
             <div className="form-group">
