@@ -144,7 +144,7 @@ public class ReservationService {
         }
 
         // Retrieve reservations where the DJ is assigned and the status is 'pending'
-        List<Reservation> pendingReservations = rDAO.findByDj_DjIdAndDj_Status(dj, "pending");
+        List<Reservation> pendingReservations = rDAO.findByDj_DjIdAndStatus(dj, "pending");
 
         if (pendingReservations.isEmpty()) {
             logger.info("No pending reservations found for DJ: {}", dj.getFirstName());
