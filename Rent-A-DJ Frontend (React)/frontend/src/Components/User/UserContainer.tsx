@@ -15,6 +15,7 @@ export const UserContainer:React.FC = () => {
 
         <>
             {<p>Welcome, {user.loggedUsername}</p>}
+            <h2>Reservation Table</h2>
             <ReservationTable />
         </>
 
