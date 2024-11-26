@@ -85,7 +85,7 @@ public class ReservationController {
         return ResponseEntity.ok(reservations);
     }
 
-    @PatchMapping("{reservationId}/status}")
+    @PatchMapping("{reservationId}/status")
     public ResponseEntity<Reservation> resolveReservation(@PathVariable int id, @RequestParam String status){
         Reservation reservation = reservationService.resolveReservation(id, status);
 
