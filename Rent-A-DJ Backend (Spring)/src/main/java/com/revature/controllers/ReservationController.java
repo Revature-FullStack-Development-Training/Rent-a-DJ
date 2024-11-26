@@ -99,4 +99,10 @@ public class ReservationController {
 
         return ResponseEntity.ok(reservation);
     }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<String> handleIllegalArgument(IllegalArgumentException e) {
+        logger.error("IllegalArgumentException: {}", e.getMessage(), e);
+        return ResponseEntity.status(400).body(e.getMessage());
+    }
 }
