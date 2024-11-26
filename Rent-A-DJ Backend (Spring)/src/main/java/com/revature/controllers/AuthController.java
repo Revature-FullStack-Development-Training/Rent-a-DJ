@@ -4,6 +4,8 @@ import com.revature.models.DTOs.LoginDTO;
 import com.revature.models.DTOs.OutgoingUserDTO;
 import com.revature.services.AuthService;
 import jakarta.servlet.http.HttpSession;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,6 +14,8 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/auth")
 @CrossOrigin //requests from any location can react this no problem. not very secure
 public class AuthController {
+
+    private static final Logger logger = LoggerFactory.getLogger(AuthController.class);
 
     //autowire the service
     AuthService authService;
@@ -29,19 +33,26 @@ public class AuthController {
     @PostMapping
     public ResponseEntity<OutgoingUserDTO> login(@RequestBody LoginDTO lDTO, HttpSession session){
 
-        //send LoginDTO to service, getting us the OutUser
-        OutgoingUserDTO uDTO = authService.login(lDTO, session);
+        try {
+            // Send LoginDTO to service, getting us the OutUser
+            OutgoingUserDTO uDTO = authService.login(lDTO, session);
 
-        //The session gets initialized and filled with user data in the service layer!
+            // If we get here, login was successful and session was created!
+            logger.info("Login successful for user: {}", lDTO.getUsername()); // Log success
 
-        //if we get here, login was successful and session was created!
-        return ResponseEntity.ok(uDTO);
+            return ResponseEntity.ok(uDTO);
+
+        } catch (IllegalArgumentException e) {
+            logger.error("Login failed for user: {}. Error: {}", lDTO.getUsername(), e.getMessage()); // Log error if login fails
+            throw e; // Rethrow the exception to be caught by the @ExceptionHandler
+        }
 
     }
 
     //Exception Handler (stole this from the UserController)
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<String> handleIllegalArgument(IllegalArgumentException e){
+        logger.error("Handled IllegalArgumentException: {}", e.getMessage());
         //Return a 400 (BAD REQUEST) status code with the exception message
         return ResponseEntity.status(400).body(e.getMessage());
     }

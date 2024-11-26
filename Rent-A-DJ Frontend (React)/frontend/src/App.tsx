@@ -8,7 +8,8 @@ import { Register } from "./Components/LoginRegister/Register";
 import { UserContainer } from "./Components/User/UserContainer";
 import { AdminContainer } from "./Components/Admin/AdminContainer";
 import { UserContext, useUserContext } from "./context";
-import 'bootstrap/dist/css/bootstrap.min.css';
+import { DJContainer } from "./Components/DJs/DJContainer";
+//import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
 
@@ -24,6 +25,7 @@ function App() {
             <Route path="/register" element={<Register />} />
             <Route path="/admins" element={<AdminContainer />} />
             <Route path="/users" element={<UserContainer />} />
+            <Route path="/djs" element={<DJContainer />} />
           </Routes>
         </BrowserRouter>
       </UserContext.Provider>

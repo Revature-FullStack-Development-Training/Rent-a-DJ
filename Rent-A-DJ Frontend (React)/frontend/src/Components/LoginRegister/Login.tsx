@@ -53,8 +53,10 @@ export const Login:React.FC = () => {
 
                 if(user.loggedRole === "admin"){
                     navigate("/admins")
-                } else {
+                } else if(user.loggedRole === "user") {
                     navigate("/users")
+                } else {
+                    navigate("/djs")
                 }
 
             }
@@ -68,13 +70,13 @@ export const Login:React.FC = () => {
     return (
         <Container> 
 
-            <h1>dj reservation</h1>
-                <h3>log in:</h3>
+            <h1>DJ Reservation</h1>
+                <h3>Please Log In:</h3>
                 
                 <div>
                     <Form.Control
                         type="text"
-                        placeholder="username"
+                        placeholder="Username"
                         name="username"
                         onChange={storeValues}
                     />
@@ -83,15 +85,15 @@ export const Login:React.FC = () => {
                 <div>
                     <Form.Control
                         type="password"
-                        placeholder="password"
+                        placeholder="Password"
                         name="password"
                         onChange={storeValues}
                     />
                 </div>
                 
 
-            <Button className="btn-success" onClick={login}>login</Button>
-            <Button className="btn-dark" onClick={()=>navigate("/register")}>register</Button>
+            <Button className="btn-success" onClick={login}>Login</Button>
+            <Button className="btn-dark" onClick={()=>navigate("/register")}>Register</Button>
         </Container>
     )
 }
