@@ -68,12 +68,12 @@ export const Login:React.FC = () => {
     }
 
     return (
-        <Container> 
+        <Container className="my-5 mx-auto" id="regForm"> 
 
             <h1>DJ Reservation</h1>
                 <h3>Please Log In:</h3>
                 
-                <div>
+                <div className="form-group">
                     <Form.Control
                         type="text"
                         placeholder="Username"
@@ -82,7 +82,7 @@ export const Login:React.FC = () => {
                     />
                 </div>
 
-                <div>
+                <div className="form-group">
                     <Form.Control
                         type="password"
                         placeholder="Password"
@@ -91,9 +91,10 @@ export const Login:React.FC = () => {
                     />
                 </div>
                 
-
-            <Button className="btn-success" onClick={login}>Login</Button>
-            <Button className="btn-dark" onClick={()=>navigate("/register")}>Register</Button>
+            <div className="button-group">
+                <Button className="btn-success" onClick={login}>Login</Button>
+                <Button className="btn-dark" onClick={()=>navigate("/register")}>Register</Button>
+            </div>
         </Container>
     )
 }

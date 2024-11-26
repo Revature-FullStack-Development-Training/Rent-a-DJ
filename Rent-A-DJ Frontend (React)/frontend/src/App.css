@@ -75,3 +75,106 @@
   gap: 10%; /* Adjust the gap as needed */
 }
 
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+#regForm {
+  /* background-color: #6b758e; */
+  background-color: rgb(255, 255, 255);
+  margin-top: 50px;
+  padding: 5%;
+  /* box-shadow: 0 4px 8px 0 rgba(255, 255, 255, 0.5); */
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.5);
+  width: 100%; /* Make the form take full width */
+  max-width: 500px; /* Set a maximum width */
+}
+
+@media (max-width: 576px) {
+  #regForm {
+    padding: 10%; /* Increase padding for smaller screens */
+  }
+}
+
+.form-group {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.form-group input,
+.form-group select {
+    flex: 1;
+}
+
+.rounded-input {
+    border-radius: 8px; /* Adjust the radius as needed */
+    padding: 8px; /* Optional: Add padding for better appearance */
+    border: 1px solid #ccc; /* Optional: Add border for better appearance */
+}
+
+.button-group {
+  display: flex;
+  justify-content: center;
+  gap: 10%; 
+}
+/* 
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
+#root {
+  height: 100%;
+}
+
+.App {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(to top, #000000d2, #393a3dce);
+}
+
+.Container {
+  flex: 1;
+} */
