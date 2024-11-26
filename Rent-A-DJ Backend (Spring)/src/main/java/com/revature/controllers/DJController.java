@@ -4,6 +4,8 @@ import com.revature.daos.DJDAO;
 import com.revature.models.DJ;
 import com.revature.models.User;
 import com.revature.services.DJService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +17,8 @@ import java.util.Map;
 @RequestMapping("/djs")
 @CrossOrigin
 public class DJController {
+
+    private static final Logger logger = LoggerFactory.getLogger(DJController.class);
 
     private DJService djService;
     //private DJDAO djDAO;
@@ -30,6 +34,8 @@ public class DJController {
     public ResponseEntity<DJ> registerDJ(@RequestBody DJ newDJ) {
         DJ dj = djService.registerDJ(newDJ.getFirstName(), newDJ.getLastName(),
                 newDJ.getUsername(), newDJ.getPassword(), newDJ.getRate());
+
+        logger.info("Successfully registered DJ with username: {}", newDJ.getUsername());
         return ResponseEntity.status(201).body(dj);
     }
 
@@ -39,6 +45,7 @@ public class DJController {
 
         List<DJ> allDJs = djService.getAllDJs();
 
+        logger.info("Retrieved {} DJs from the database", allDJs.size());
         return ResponseEntity.ok(allDJs);
     }
 
@@ -48,6 +55,8 @@ public class DJController {
     public ResponseEntity<DJ> changeRate(@PathVariable int djId,
                                          @RequestBody Map<String, Double> rate) {
         DJ dj = djService.changeRate(djId, rate.get("rate"));
+
+        logger.info("Successfully updated rate for DJ with ID: {}", djId);
         return ResponseEntity.ok(dj);
     }
 
@@ -55,6 +64,8 @@ public class DJController {
     @PatchMapping("{djId}/password")
     public ResponseEntity<DJ> changePassword(@PathVariable int djId, String password){
         DJ dj = djService.changePassword(djId, password);
+
+        logger.info("Successfully changed password for DJ with ID: {}", djId);
         return ResponseEntity.ok(dj);
     }
 
@@ -62,6 +73,8 @@ public class DJController {
     @PatchMapping("{djId}/username")
     public ResponseEntity<DJ> changeUsername(@PathVariable int djId, String password){
         DJ dj = djService.changeUsername(djId, password);
+
+        logger.info("Successfully changed username for DJ with ID: {}", djId);
         return ResponseEntity.ok(dj);
     }
 
@@ -70,12 +83,20 @@ public class DJController {
     public ResponseEntity<DJ> removeDJ(@PathVariable String username) {
         DJ djToDelete = djService.findByUsername(username);
 
-        djService.removeDJ(djToDelete.getDjId());
+        if (djToDelete != null) {
+            djService.removeDJ(djToDelete.getDjId());
+            logger.info("Successfully removed DJ with username: {}", username); // Log if DJ was successfully removed
+        } else {
+            logger.warn("DJ with username: {} not found", username); // Log warning if DJ not found
+        }
+
         return ResponseEntity.ok(djToDelete);
     }
 
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<String> handleIllegalArgument(IllegalArgumentException e) {
+        logger.error("Handled IllegalArgumentException: {}", e.getMessage());
+
         return ResponseEntity.status(400).body(e.getMessage());
     }
 }

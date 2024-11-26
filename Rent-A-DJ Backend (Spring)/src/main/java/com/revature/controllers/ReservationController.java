@@ -7,6 +7,8 @@ import com.revature.services.ReservationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
@@ -14,6 +16,8 @@ import java.util.List;
 @RequestMapping("/reservations")
 @CrossOrigin
 public class ReservationController {
+
+    private static final Logger logger = LoggerFactory.getLogger(ReservationController.class);
 
     @Autowired
     private ReservationService reservationService;
@@ -31,6 +35,7 @@ public class ReservationController {
         // Call the service to add the reservation
         Reservation newReservation = reservationService.addReservation(location, startdatetime, enddatetime, dj, user, status);
 
+        logger.info("Successfully added reservation for user: {} with ID: {}", user.getUsername(), newReservation.getReservationId());
 
         return ResponseEntity.status(201).body(newReservation);
     }
@@ -39,6 +44,8 @@ public class ReservationController {
     @GetMapping
     public ResponseEntity<List<Reservation>> getAllReservations() {
         List<Reservation> allReservations = reservationService.getAllReservations();
+
+        logger.info("Retrieved {} reservations", allReservations.size()); // Log the number of reservations fetched
         return ResponseEntity.ok(allReservations);
     }
 
@@ -46,6 +53,8 @@ public class ReservationController {
     @GetMapping("/user/{username}")
     public ResponseEntity<List<Reservation>> getUserReservations(@PathVariable String username) {
         List<Reservation> userReservations = reservationService.getUserReservations(username);
+
+        logger.info("Retrieved {} reservations for user: {}", userReservations.size(), username);
         return ResponseEntity.ok(userReservations);
     }
 
@@ -53,6 +62,8 @@ public class ReservationController {
     @GetMapping("/user/{username}/pending")
     public ResponseEntity<List<Reservation>> getPendingUserReservations(@PathVariable String username) {
         List<Reservation> pendingUserReservations = reservationService.getPendingUserReservations(username);
+
+        logger.info("Retrieved {} pending reservations for user: {}", pendingUserReservations.size(), username);
         return ResponseEntity.ok(pendingUserReservations);
     }
 
@@ -60,12 +71,16 @@ public class ReservationController {
     @GetMapping("/pending")
     public ResponseEntity<List<Reservation>> getPendingReservations() {
         List<Reservation> pendingReservations = reservationService.getAllPendingReservations();
+
+        logger.info("Retrieved {} pending reservations", pendingReservations.size());
         return ResponseEntity.ok(pendingReservations);
     }
 
     @GetMapping("/dj/{djId}/username/{username}")
     public ResponseEntity<List<Reservation>> getReservationsByDj(@PathVariable int djId, @PathVariable String username) {
         List<Reservation> reservations = reservationService.getReservationsByDjIdAndUsername(djId, username);
+
+        logger.info("Retrieved {} reservations for DJ ID: {} and user: {}", reservations.size(), djId, username);
         return ResponseEntity.ok(reservations);
     }
 }
