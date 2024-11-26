@@ -1,6 +1,7 @@
 package com.revature.services;
 
 import com.revature.daos.AuthDAO;
+import com.revature.daos.DJDAO;
 import com.revature.models.DTOs.LoginDTO;
 import com.revature.models.DTOs.OutgoingUserDTO;
 import com.revature.models.User;
@@ -10,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -23,15 +25,22 @@ public class AuthServiceTest {
     private AuthDAO aDAO;  // Mock the AuthDAO
 
     @Mock
+    private DJDAO djDAO; // Mock the DJDAO (used by DJService)
+
+    @Mock
     private HttpSession session;  // Mock the HttpSession
 
     @InjectMocks
     private AuthService authService;  // Inject the mocks into AuthService
 
+    @Mock
+    private DJService djService; // Mock the DJService
+
     private LoginDTO loginDTO;
 
     @BeforeEach
     void setUp() {
+        MockitoAnnotations.openMocks(this); // Initialize mocks
         loginDTO = new LoginDTO("testUser", "password123"); // Sample login data
     }
 
@@ -63,11 +72,14 @@ public class AuthServiceTest {
         // Mock the DAO to return null when looking up the invalid credentials
         when(aDAO.findByUsernameAndPassword(invalidLoginDTO.getUsername(), invalidLoginDTO.getPassword())).thenReturn(null);
 
+        // Mock the DJ service to return null when looking up the invalid username
+        when(djService.findByUsername(invalidLoginDTO.getUsername())).thenReturn(null);
+
         // When: The login method is called with invalid credentials
         Exception exception = assertThrows(IllegalArgumentException.class, () -> authService.login(invalidLoginDTO, session));
 
         // Then: Ensure the exception message is the expected one
-        assertEquals("No user found with those credentials!", exception.getMessage());
+        assertEquals("No user or DJ found with those credentials!", exception.getMessage());
 
         // Verify that session was not modified since the login failed
         verify(session, times(0)).setAttribute(anyString(), any());

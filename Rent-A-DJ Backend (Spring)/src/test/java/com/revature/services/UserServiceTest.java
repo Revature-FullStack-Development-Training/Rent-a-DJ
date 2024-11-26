@@ -36,7 +36,7 @@ public class UserServiceTest {
         User user = new User(1, "John", "Doe", "user123", "password", "default user");
 
         // Mock the DAO method to return a single user
-        when(userDAO.findByUsername(username)).thenReturn(List.of(user));
+        when(userDAO.findByUsername(username)).thenReturn(user);
 
         // Act: Call the method with a valid username
         User result = underTest.getUserByUsername(username);
@@ -48,6 +48,7 @@ public class UserServiceTest {
 
         verify(userDAO).findByUsername(username);  // Verify the DAO method was called
     }
+
     @Test
     void getUserByUsernameThrowsExceptionWhenUsernameIsBlankTest() {// Tests getUserByUsername method
         // Test when the username is blank
@@ -71,7 +72,7 @@ public class UserServiceTest {
         User newUser = new User(1, "testUser", "Test", "testUser", "password123", "default user");
 
         // Simulates checking if the username already exists, then returns an empty list to prove none exist.
-        when(userDAO.findByUsername(newUser.getUsername())).thenReturn(List.of());
+        when(userDAO.findByUsername(newUser.getUsername())).thenReturn(newUser);
 
         // Match attributes of user being passed to save to ensure correct behavior.
         // Uses Argument Matcher.
@@ -112,8 +113,6 @@ public class UserServiceTest {
         verify(userDAO, never()).findByUsername(anyString()); // Verify no database call for username check
         verify(userDAO, never()).save(any(User.class)); // Verify save was NOT called
     }
-
-
 
     @Test
     void canDeleteUserTest() { // Tests deleteUser method
@@ -192,6 +191,7 @@ public class UserServiceTest {
         // Assert: Verify that the UserDAO's findAll() method was called.
         verify(userDAO).findAll();
     }
+
     @Test
     void canGetAllUsersWithDataTest() {
         // Create a list of mock users
@@ -214,5 +214,77 @@ public class UserServiceTest {
 
         // Verify that findAll was called
         verify(userDAO).findAll();
+    }
+
+    @Test
+    void canChangeUsernameTest() { // Tests changeUsername method
+        // Given: A user with an existing ID and valid new username
+        int userId = 1;
+        String newUsername = "newUsername";
+        User existingUser = new User(userId, "currentUsername", "First", "currentUsername", "password", "user");
+
+        // Mock the DAO to return the existing user
+        when(userDAO.findByUserId(userId)).thenReturn(existingUser);
+        when(userDAO.save(any(User.class))).thenAnswer(invocation -> invocation.getArgument(0)); // Return the updated user
+
+        // When: changeUsername is called
+        User updatedUser = underTest.changeUsername(userId, newUsername);
+
+        // Then: Verify the username is updated
+        assertEquals(newUsername, updatedUser.getUsername());
+        verify(userDAO).save(updatedUser);
+    }
+
+    @Test
+    void cannotChangeUsernameWhenUserNotFoundTest() { // Tests changeUsername method
+        // Given: A non-existent user ID
+        int userId = 9999;
+        String newUsername = "newUsername";
+
+        // Mock the DAO to return null
+        when(userDAO.findByUserId(userId)).thenReturn(null);
+
+        // When: changeUsername is called
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> underTest.changeUsername(userId, newUsername));
+
+        // Then: Verify the exception message
+        assertEquals("User with User ID: " + userId + " was not found!", exception.getMessage());
+        verify(userDAO, never()).save(any(User.class)); // Ensure save is not called
+    }
+
+    @Test
+    void canChangePasswordTest() { // Tests changePassword method
+        // Given: A valid user and new password
+        int userId = 1;
+        String newPassword = "newSecurePassword";
+        User existingUser = new User(userId, "username", "First", "username", "oldPassword", "user");
+
+        // Mock the DAO to return the existing user
+        when(userDAO.findByUserId(userId)).thenReturn(existingUser);
+        when(userDAO.save(any(User.class))).thenAnswer(invocation -> invocation.getArgument(0)); // Return the updated user
+
+        // When: changePassword is called
+        User updatedUser = underTest.changePassword(userId, newPassword);
+
+        // Then: Verify the password is updated
+        assertEquals(newPassword, updatedUser.getPassword());
+        verify(userDAO).save(updatedUser); // Ensure save is called
+    }
+
+    @Test
+    void cannotChangePasswordWhenUserNotFoundTest() { // Tests changePassword method
+        // Given: A non-existent user ID and a new password
+        int userId = 99;
+        String newPassword = "newSecurePassword";
+
+        // Mock the DAO to return null
+        when(userDAO.findByUserId(userId)).thenReturn(null);
+
+        // When: changePassword is called
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> underTest.changePassword(userId, newPassword));
+
+        // Then: Verify the exception message
+        assertEquals("User with User ID: " + userId + " was not found!", exception.getMessage());
+        verify(userDAO, never()).save(any(User.class)); // Ensure save is not called
     }
 }

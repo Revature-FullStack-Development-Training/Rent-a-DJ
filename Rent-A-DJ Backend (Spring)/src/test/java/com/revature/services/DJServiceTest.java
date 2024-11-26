@@ -8,6 +8,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -25,6 +27,7 @@ public class DJServiceTest {
     @BeforeEach
         // Runs before each test to initialize the UserService w/ the mocked DAO.
     void setUp(){
+
         underTest = new DJService(dDAO);
     }
 
@@ -43,6 +46,7 @@ public class DJServiceTest {
         // Then: Verify that the correct DJ is returned
         assertEquals(expectedDJ, result); // Ensure that the returned DJ is the one we mocked
     }
+
     @Test
     void findByUsernameWhenUsernameNotFoundTest() { // Tests findByUsername method
         // Given: A username that does not exist in the database
@@ -155,14 +159,128 @@ public class DJServiceTest {
     }
 
     @Test
-    void getAllDJs() {
+    void canSuccessfullyGetALlDJsTest() { // Tests getAllDJs method
+        // Given: A list of DJs returned by the DAO
+        List<DJ> mockDJs = List.of(
+                new DJ(1, "John", "Doe", "johnny", "password", 50.0),
+                new DJ(2, "Jane", "Smith", "janey", "password", 60.0)
+        );
+        when(dDAO.findAll()).thenReturn(mockDJs);
+
+        // When: getAllDJs is called
+        List<DJ> result = underTest.getAllDJs();
+
+        // Then: Verify the returned list
+        assertNotNull(result);
+        assertEquals(2, result.size());
+        assertEquals(mockDJs, result);
+        verify(dDAO, times(1)).findAll(); // Ensure the DAO method was called once
     }
 
     @Test
-    void changePassword() {
+    void testGetAllDJsEmptyList() { // Tests getAllDJs method
+        // Given: An empty list is returned by the DJDAO
+        List<DJ> emptyList = new ArrayList<>();
+
+        when(dDAO.findAll()).thenReturn(emptyList); // Mock the behavior of the DAO to return an empty list
+
+        // When: Calling the getAllDJs method
+        List<DJ> result = underTest.getAllDJs();
+
+        // Then: The returned list should be empty
+        assertNotNull(result);
+        assertTrue(result.isEmpty());
     }
 
     @Test
-    void removeDJ() {
+    void canChangePasswordSuccessfullyTest() { // Test changePassword method
+        // Given: A DJ object with the ID 1 and a new password
+        DJ mockDJ = new DJ(1, "John", "Doe", "johnny", "oldPassword", 50.0);
+        when(dDAO.findByDjId(1)).thenReturn(mockDJ);  // Mocking the DJ return
+        String newPassword = "newPassword";  // New password to set
+        when(dDAO.save(mockDJ)).thenReturn(mockDJ);  // Mocking the save method to return the updated DJ
+
+        // When: Calling the changePassword method
+        DJ result = underTest.changePassword(1, newPassword);
+
+        // Then: Assert that the result is not null
+        assertNotNull(result);  // Ensure the result is not null
+        assertEquals(newPassword, result.getPassword());  // Check if the password was updated
+        verify(dDAO, times(1)).save(mockDJ);  // Ensure the save method was called once
     }
+
+    @Test
+    void cannotChangePasswordWhenDJNotFoundTest() { // Test changePassword method
+        // Given: The DJ does not exist
+        when(dDAO.findByDjId(1)).thenReturn(null); // Mock the DAO to return null when searching for a non-existing DJ
+
+        // When & Then: Calling changePassword should throw an IllegalArgumentException
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            underTest.changePassword(1, "newPassword123");
+        });
+
+        assertEquals("DJ with DJ ID: 1 was not found!", exception.getMessage());
+    }
+
+    @Test
+    void canChangeUsernameSuccessfullyTest() { // Tests changeUsername method
+        // Given: A DJ object with the ID 1 and a new username
+        DJ mockDJ = new DJ(1, "John", "Doe", "username", "password", 50.0);
+        when(dDAO.findByDjId(1)).thenReturn(mockDJ);  // Mocking the DJ return
+        String newUsername = "newUsername";  // New username to set
+        when(dDAO.save(mockDJ)).thenReturn(mockDJ);  // Mocking the save method to return the updated DJ
+
+        // When: Calling the changeUsername method
+        DJ result = underTest.changeUsername(1, newUsername);
+
+        // Then: Assert that the result is not null and the username was updated
+        assertNotNull(result);  // Ensure the result is not null
+        assertEquals(newUsername, result.getUsername());  // Check if the username was updated
+        verify(dDAO, times(1)).save(mockDJ);  // Ensure the save method was called once
+    }
+
+    @Test
+    void cannotChangeUsernameWhenDJNotFoundTest() { // Tests changeUsername method
+        // Given: No DJ exists with the given ID
+        when(dDAO.findByDjId(1)).thenReturn(null);  // Mocking the DJ not found scenario
+
+        // When: Calling the changeUsername method
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            underTest.changeUsername(1, "newUsername");
+        });
+
+        // Then: Verify that the exception message is as expected
+        assertEquals("DJ with DJ ID: 1 was not found!", exception.getMessage());
+    }
+
+    @Test
+    void canRemoveDJSuccessfullyTest() { // Tests removeDJ method
+        // Given: A DJ object with the ID 1 that exists in the database
+        DJ mockDJ = new DJ(1, "John", "Doe", "username", "password", 50.0);
+        when(dDAO.findByDjId(1)).thenReturn(mockDJ); // Mock the DJ retrieval
+        doNothing().when(dDAO).delete(mockDJ); // Mock the deletion process
+
+        // When: Calling the removeDJ method
+        DJ result = underTest.removeDJ(1);
+
+        // Then: Assert that the DJ was deleted and returned
+        assertNotNull(result);  // Ensure the result is not null
+        assertEquals(mockDJ, result);  // Ensure the returned DJ is the same as the mock DJ
+        verify(dDAO, times(1)).delete(mockDJ);  // Ensure the delete method was called once
+    }
+
+    @Test
+    void cannotRemoveDJWhenInvalidIdTest() { // Tests removeDJ method
+        // Given: An invalid DJ ID (e.g., 0)
+        int invalidDjId = 0;
+
+        // When & Then: Calling removeDJ should throw an IllegalArgumentException
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            underTest.removeDJ(invalidDjId);
+        });
+
+        // Then: Assert that the exception message is as expected
+        assertEquals("DJ Id must be greater than 0!", exception.getMessage());
+    }
+
 }

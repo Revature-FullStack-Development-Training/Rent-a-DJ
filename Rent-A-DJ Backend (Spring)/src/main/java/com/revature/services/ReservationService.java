@@ -42,31 +42,40 @@ public class ReservationService {
         //user will be set with the userId in the DTO
         Reservation newReservation = new Reservation(location, startdatetime, enddatetime, dj, user, status);
 
-        //Use the UserDAO to get a User by id
-        Optional<User> u = Optional.ofNullable(uDAO.findByUsername(user.getUsername()));
+        // Use the UserDAO to get a User by username
+        User foundUser = uDAO.findByUsername(user.getUsername());
 
-        /*findById returns an OPTIONAL... What does that mean?
-         it will either hold the value requested, or it won't. This helps us avoid NullPointerExc.
-         BECAUSE... we can't access the data if we don't use the .get() method
-         Check out how it helps us write error handling functionality: */
-        if (u.isEmpty()) {
+        // Check if the user is null (not found)
+        if (foundUser == null) {
             logger.error("No user found with username: {}", user.getUsername());
             throw new IllegalArgumentException("No user found with username: " + newReservation.getUser().getUsername());
         } else {
-            //set the user object in the new Reservation
-            newReservation.setUser(u.get()); //.get() is what extracts the value from the Optional
+            // Set the user object in the new Reservation
+            newReservation.setUser(foundUser);
 
+            // Log and save the reservation
             logger.info("Successfully created reservation for user: {} at location: {} from {} to {}",
-                    u.get().getUsername(), location, startdatetime, enddatetime);
-            //send the Reservation to the DAO
+                    foundUser.getUsername(), location, startdatetime, enddatetime);
+
+            // Send the Reservation to the DAO
             return rDAO.save(newReservation);
         }
     }
 
-    public Reservation resolveReservation(int id, String status){
+    @Transactional
+    public Reservation resolveReservation(int id, String status) {
+        if (!(status.equals("pending") || status.equals("approved") || status.equals("denied"))) {
+            throw new IllegalArgumentException("Invalid status");
+        }
+
         Reservation r = rDAO.findByReservationId(id);
-        r.setStatus(status);
-        return rDAO.save(r);
+
+        if (r == null) {
+            throw new IllegalArgumentException("No reservation found with id: " + id);
+        } else {
+            r.setStatus(status);
+            return r;
+        }
     }
 
     public List<Reservation> getUserReservations(String username) {
@@ -99,15 +108,6 @@ public class ReservationService {
         return rDAO.findAll();
     }
 
-    public Reservation changeReservationStartTime(int id, LocalDateTime newTime){
-        //find reservation by id or throw IllegalArguementException
-        Reservation reservation = rDAO.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Reservation not found"));
-        reservation.setStartdatetime(newTime);
-        return rDAO.save(reservation);
-    }
-
-
     public List<Reservation> getReservationsByDjIdAndUsername(int djId, String username) {
         return rDAO.findByDj_DjIdAndDj_Username(djId, username);
     }
@@ -131,6 +131,14 @@ public class ReservationService {
             r.get().setLocation(newLocation);
             return rDAO.save(r.get());
         }
+    }
+
+    public Reservation changeReservationStartTime(int id, LocalDateTime newTime){
+        //find reservation by id or throw IllegalArguementException
+        Reservation reservation = rDAO.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Reservation not found"));
+        reservation.setStartdatetime(newTime);
+        return rDAO.save(reservation);
     }
 
 }

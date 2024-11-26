@@ -103,6 +103,7 @@ public class Reservation {
         this.enddatetime = LocalDateTime.parse(enddatetime);
         this.dj = dj;
         this.user = user;
+        this.status = status;
     }
 
     @Override
