@@ -92,7 +92,6 @@ public class ReservationController {
         return ResponseEntity.ok(reservation);
     }
 
-
     //Handles changing reservation start time
     @PatchMapping("/{reservationId}/startTime")
     public ResponseEntity<Reservation> changeStartTime(@PathVariable int reservationId, @RequestBody LocalDateTime newTime){
