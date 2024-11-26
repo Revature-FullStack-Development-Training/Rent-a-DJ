@@ -91,7 +91,7 @@ public class DJService {
             dj.setRate(newRate);
         }
         //save and return the updated user
-        logger.info("DJ with ID: {} successfully update payrate to {}", djId, newRate);
+        logger.info("DJ with ID: {} successfully updated payrate to {}", djId, newRate);
         return dDAO.save(dj);
     }
 
@@ -108,7 +108,6 @@ public class DJService {
 
         //not a lot of error handling we need to do here
         return list;
-
     }
 
     //A method to change a DJ's password
@@ -154,7 +153,7 @@ public class DJService {
             dj.setUsername(newUsername);
 
         }
-        logger.info("DJ with ID: {} successfully update username to {}", djId, newUsername);
+        logger.info("DJ with ID: {} successfully updated username to {}", djId, newUsername);
         //save and return the updated user
         return dDAO.save(dj);
     }

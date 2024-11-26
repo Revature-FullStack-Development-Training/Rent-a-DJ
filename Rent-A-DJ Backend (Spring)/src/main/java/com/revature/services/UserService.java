@@ -127,7 +127,7 @@ public class UserService {
             user.setUsername(newUsername);
         }
         //save and return the updated user
-        logger.info("Password successfully changed for user ID {}", userId);
+        logger.info("Username successfully changed for user ID {}", userId);
         return uDAO.save(user);
     }
 
