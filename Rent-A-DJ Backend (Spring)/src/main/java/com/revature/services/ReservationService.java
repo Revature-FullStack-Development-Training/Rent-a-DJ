@@ -2,6 +2,7 @@ package com.revature.services;
 
 //Check UserService for general notes on Services
 
+import com.revature.daos.DJDAO;
 import com.revature.daos.ReservationDAO;
 import com.revature.daos.UserDAO;
 import com.revature.models.DJ;
@@ -23,12 +24,14 @@ public class ReservationService {
 
     //autowire the ReservationDAO with constructor injection so we can use the ReservationDAO methods
     private ReservationDAO rDAO;
-    private UserDAO uDAO; //we also need some UserDAO methods!
+    private UserDAO uDAO;
+    private DJDAO dDAO;//we also need some UserDAO methods!
 
     @Autowired
     public ReservationService(ReservationDAO rDAO, UserDAO uDAO) {
         this.rDAO = rDAO;
         this.uDAO = uDAO;
+        this.dDAO = dDAO;
     }
 
     //This method takes in a new Reservation object and inserts it into the DB
@@ -64,7 +67,7 @@ public class ReservationService {
 
     @Transactional
     public Reservation resolveReservation(int id, String status) {
-        if (!(status.equals("pending") || status.equals("approved") || status.equals("denied"))) {
+        if (!(status.equalsIgnoreCase("pending") || status.equalsIgnoreCase("approved") || status.equalsIgnoreCase("denied"))) {
             throw new IllegalArgumentException("Invalid status");
         }
 
@@ -94,7 +97,6 @@ public class ReservationService {
             logger.error("User with Username: {} was not found when getting pending reservations", username);
             throw new IllegalArgumentException("No user found with username: " + username);
         } else {
-
             return rDAO.findByUserAndStatus(u.get(),"pending");
         }
     }
@@ -123,7 +125,7 @@ public class ReservationService {
         }
         else if (r.get().getLocation().equals(newLocation)) {
             throw new IllegalArgumentException("Location is already " + newLocation + "!");
-        } else if (!r.get().getStatus().equals("pending")) {
+        } else if (!r.get().getStatus().equalsIgnoreCase("pending")) {
             throw new IllegalArgumentException("Can only change the location of pending reservations!");
         }
         //any other error handling goes above here
@@ -134,11 +136,41 @@ public class ReservationService {
     }
 
     public Reservation changeReservationStartTime(int id, LocalDateTime newTime){
-        //find reservation by id or throw IllegalArguementException
+        //find reservation by id or throw IllegalArgumentException
         Reservation reservation = rDAO.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Reservation not found"));
         reservation.setStartdatetime(newTime);
         return rDAO.save(reservation);
     }
 
+    public List<Reservation> getPendingReservationsByDj(DJ dj) {
+        // Check if the DJ exists (you may want to check this)
+        if (dj == null) {
+            logger.error("DJ object is null");
+            throw new IllegalArgumentException("DJ cannot be null");
+        }
+
+        // Retrieve reservations where the DJ is assigned and the status is 'pending'
+        List<Reservation> pendingReservations = rDAO.findByDj_DjIdAndDj_Status(dj, "pending");
+
+        if (pendingReservations.isEmpty()) {
+            logger.info("No pending reservations found for DJ: {}", dj.getFirstName());
+        } else {
+            logger.info("Found {} pending reservations for DJ: {}", pendingReservations.size(), dj.getFirstName());
+        }
+
+        return pendingReservations;
+    }
+
+    public DJ getDjById(int djId) {
+        // Use findById() to get the DJ, which returns an Optional
+        Optional<DJ> dj = dDAO.findById(djId);
+
+        // Check if DJ exists, otherwise throw an exception or handle the missing DJ case
+        if (dj.isPresent()) {
+            return dj.get();  // Return the DJ if found
+        } else {
+            throw new IllegalArgumentException("DJ not found with ID: " + djId);  // Handle DJ not found
+        }
+    }
 }

@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.List;
 
 @RestController
@@ -105,6 +106,29 @@ public class ReservationController {
         Reservation reservation = reservationService.updateReservationLocation(reservationId, newLocation);
 
         return ResponseEntity.ok(reservation);
+    }
+
+    @GetMapping("/pending/dj/{djId}")
+    public ResponseEntity<List<Reservation>> getPendingReservationsByDj(@PathVariable int djId) {
+        // Retrieve the DJ object by ID (you may need a service method to fetch the DJ)
+        DJ dj = reservationService.getDjById(djId);  // Assuming a method in the service layer to get the DJ by ID
+
+        if (dj == null) {
+            logger.error("DJ with ID: {} not found", djId);
+            return ResponseEntity.status(404).body(Collections.emptyList());  // Return 404 if DJ not found
+        }
+
+        // Call the service to retrieve pending reservations by DJ
+        List<Reservation> pendingReservations = reservationService.getPendingReservationsByDj(dj);
+
+        // Log and return the result
+        if (pendingReservations.isEmpty()) {
+            logger.info("No pending reservations found for DJ ID: {}", djId);
+            return ResponseEntity.status(204).body(pendingReservations);  // Return 204 No Content if empty
+        }
+
+        logger.info("Retrieved {} pending reservations for DJ ID: {}", pendingReservations.size(), djId);
+        return ResponseEntity.ok(pendingReservations);  // Return 200 OK with the reservations
     }
 
     @ExceptionHandler(IllegalArgumentException.class)
