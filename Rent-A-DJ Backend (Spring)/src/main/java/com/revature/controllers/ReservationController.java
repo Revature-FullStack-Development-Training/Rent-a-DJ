@@ -92,4 +92,11 @@ public class ReservationController {
         return ResponseEntity.ok(res);
     }
 
+
+    @PatchMapping("{reservationId}/location")
+    public ResponseEntity<Reservation> updateReservationLocation(@PathVariable int reservationId, @RequestBody String newLocation){
+        Reservation reservation = reservationService.updateReservationLocation(reservationId, newLocation);
+
+        return ResponseEntity.ok(reservation);
+    }
 }

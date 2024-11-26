@@ -122,4 +122,25 @@ public class ReservationService {
         return rDAO.findByDj_DjIdAndDj_Username(djId, username);
     }
 
+    public Reservation updateReservationLocation(int id, String newLocation){
+
+        //Reservation object for return and error handling
+        Optional<Reservation> r = Optional.ofNullable(rDAO.findByReservationId(id));
+
+        //error handling
+        if(r.isEmpty()){
+            throw new IllegalArgumentException("Reservation with Reservation ID: " + id + " not found!");
+        }
+        else if (r.get().getLocation().equals(newLocation)) {
+            throw new IllegalArgumentException("Location is already " + newLocation + "!");
+        } else if (!r.get().getStatus().equals("pending")) {
+            throw new IllegalArgumentException("Can only change the location of pending reservations!");
+        }
+        //any other error handling goes above here
+        else {
+            r.get().setLocation(newLocation);
+            return rDAO.save(r.get());
+        }
+    }
+
 }
