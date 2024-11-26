@@ -7,12 +7,14 @@ import com.revature.models.DTOs.LoginDTO;
 import com.revature.models.DTOs.OutgoingUserDTO;
 import com.revature.models.User;
 import jakarta.servlet.http.HttpSession;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class AuthService {
-
+    private static final Logger logger = LoggerFactory.getLogger(AuthService.class);
     @Autowired
     private DJService djService;
 
@@ -32,6 +34,8 @@ public class AuthService {
 
         //If no user is found, throw an Exception
         if (u != null) {
+
+            logger.info("User '{}' successfully logged in.", u.getUsername());
             //If a user is found, login was successful! Initialize our session
             //Remember we're using the Session that lives on the Controller layer
             AuthController.session = session;
@@ -59,6 +63,7 @@ public class AuthService {
             DJ dj = djService.findByUsername(lDTO.getUsername());
 
             if (dj != null && dj.getPassword().equals(lDTO.getPassword())) {
+                logger.info("DJ '{}' successfully logged in.", dj.getUsername());
                 // DJ login successful
                 AuthController.session = session;
                 AuthController.session.setAttribute("djId", dj.getDjId());
@@ -72,6 +77,7 @@ public class AuthService {
         }
 
         // If neither user nor DJ is found, throw an exception
+        logger.error("No user or DJ found with the username: {}", lDTO.getUsername());
         throw new IllegalArgumentException("No user or DJ found with those credentials!");
 
     }

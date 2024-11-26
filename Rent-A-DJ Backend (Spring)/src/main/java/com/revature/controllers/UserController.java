@@ -5,6 +5,8 @@ import com.revature.daos.UserDAO;
 import com.revature.models.DJ;
 import com.revature.models.User;
 import com.revature.services.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +17,7 @@ import java.util.List;
 @RequestMapping("/users")
 @CrossOrigin
 public class UserController {
+    private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
     private UserService userService;
 
