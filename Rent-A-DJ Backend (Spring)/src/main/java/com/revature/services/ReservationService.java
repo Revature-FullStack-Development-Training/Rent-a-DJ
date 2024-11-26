@@ -71,9 +71,6 @@ public class ReservationService {
         }
     }
 
-
-
-
     public List<Reservation> getUserReservations(String username) {
         Optional<User> u = Optional.ofNullable(uDAO.findByUsername(username).getFirst());
         if (u.isEmpty()) {
@@ -82,6 +79,7 @@ public class ReservationService {
             return rDAO.findByUser(u.get());
         }
     }
+
     public List<Reservation> getPendingUserReservations(String username) {
         Optional<User> u = Optional.ofNullable(uDAO.findByUsername(username).getFirst());
         if (u.isEmpty()) {

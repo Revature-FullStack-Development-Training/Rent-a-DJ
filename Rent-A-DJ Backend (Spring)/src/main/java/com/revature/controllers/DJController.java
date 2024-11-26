@@ -51,6 +51,20 @@ public class DJController {
         return ResponseEntity.ok(dj);
     }
 
+    //handles password changes for the DJ
+    @PatchMapping("{djId}/password")
+    public ResponseEntity<DJ> changePassword(@PathVariable int djId, String password){
+        DJ dj = djService.changePassword(djId, password);
+        return ResponseEntity.ok(dj);
+    }
+
+    //handles username changes for the DJ
+    @PatchMapping("{djId}/username")
+    public ResponseEntity<DJ> changeUsername(@PathVariable int djId, String password){
+        DJ dj = djService.changeUsername(djId, password);
+        return ResponseEntity.ok(dj);
+    }
+
     // This handles removing a DJ from DB by username
     @DeleteMapping("/{username}")
     public ResponseEntity<DJ> removeDJ(@PathVariable String username) {

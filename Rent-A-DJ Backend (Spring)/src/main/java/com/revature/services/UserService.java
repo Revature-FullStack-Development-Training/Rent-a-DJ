@@ -1,6 +1,7 @@
 package com.revature.services;
 
 import com.revature.daos.UserDAO;
+import com.revature.models.DJ;
 import com.revature.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -67,6 +68,48 @@ public class UserService {
         uDAO.deleteById(userid); //Inherited from JpaRepository
 
         return userToDelete;
+    }
+
+    //A method to change a user's password
+    public User changePassword(int userId, String newPassword){
+
+        //create a User object for error handling and return
+        User user = uDAO.findByUserId(userId);
+
+        //check that the DJ isn't null
+        if (user == null){
+            throw new IllegalArgumentException("User with User ID: " + userId + " was not found!");
+        }
+        //check that the password isn't blank
+        else if (user.getPassword().isBlank() || user.getPassword() == null){
+            throw new IllegalArgumentException("Password cannot be blank!");
+        }
+        else {
+            user.setPassword(newPassword);
+        }
+        //save and return the updated user
+        return uDAO.save(user);
+    }
+
+    //A method to change a user's username
+    public User changeUsername(int userId, String newUsername){
+
+        //create a User object for error handling and return
+        User user = uDAO.findByUserId(userId);
+
+        //check that the DJ isn't null
+        if (user == null){
+            throw new IllegalArgumentException("User with User ID: " + userId + " was not found!");
+        }
+        //check that the username isn't blank
+        else if (user.getUsername().isBlank() || user.getUsername() == null){
+            throw new IllegalArgumentException("Password cannot be blank!");
+        }
+        else {
+            user.setUsername(newUsername);
+        }
+        //save and return the updated user
+        return uDAO.save(user);
     }
 
     //This method gets a user by username

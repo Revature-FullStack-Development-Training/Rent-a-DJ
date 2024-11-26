@@ -112,6 +112,27 @@ public class DJService {
         return dDAO.save(dj);
     }
 
+    //A method to change a DJ's username
+    public DJ changeUsername(int djId, String newUsername){
+
+        //create a DJ object for error handling and return
+        DJ dj = dDAO.findByDjId(djId);
+
+        //check that the DJ isn't null
+        if (dj == null){
+            throw new IllegalArgumentException("DJ with DJ ID: " + djId + " was not found!");
+        }
+        //check that the username isn't blank
+        else if (dj.getUsername().isBlank() || dj.getUsername() == null){
+            throw new IllegalArgumentException("Username cannot be blank!");
+        }
+        else {
+            dj.setPassword(newUsername);
+        }
+        //save and return the updated user
+        return dDAO.save(dj);
+    }
+
 
     //A method for admins to delete a DJ (should also delete any related reservations)
     public DJ removeDJ(int djId){

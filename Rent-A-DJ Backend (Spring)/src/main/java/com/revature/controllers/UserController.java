@@ -2,6 +2,7 @@ package com.revature.controllers;
 
 
 import com.revature.daos.UserDAO;
+import com.revature.models.DJ;
 import com.revature.models.User;
 import com.revature.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,6 +49,20 @@ public class UserController {
     public ResponseEntity<User> getUserByUsernameStartingWith(@PathVariable String username) {
         List<User> u = userService.getUserByUsernameStartingWith(username);
         return ResponseEntity.ok((User) u);
+    }
+
+    //handles password changes for the User
+    @PatchMapping("{userId}/password")
+    public ResponseEntity<User> changePassword(@PathVariable int userId, String password){
+        User user = userService.changePassword(userId, password);
+        return ResponseEntity.ok(user);
+    }
+
+    //handles username changes for the User
+    @PatchMapping("{userId}/username")
+    public ResponseEntity<User> changeUsername(@PathVariable int userId, String password){
+        User user = userService.changeUsername(userId, password);
+        return ResponseEntity.ok(user);
     }
 
     @DeleteMapping("/users/{username}")
