@@ -52,9 +52,9 @@ public class UserService {
         }
         //User u = findByUsername(newUser.getUsername());
         //If u is not null, throw an exception because the username already exists
-        if(uDAO.findByUsername(newUser.getUsername()) == null){
+        User existingUser = uDAO.findByUsername(newUser.getUsername());
+        if (existingUser != null) {
             logger.error("Validation failed: Username '{}' already exists", newUser.getUsername());
-            //It will be the Controller's job to handle this
             throw new IllegalArgumentException("Username already exists!");
         }
         //.save() is the JPA method to insert data into the DB. We can also use this for updates
