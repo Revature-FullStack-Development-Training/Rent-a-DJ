@@ -66,39 +66,33 @@ public class UserServiceTest {
     }
 
     @Test
-    void canRegisterUserTest() { //tests registerUser method
+    void canRegisterUserTest() {
+        // Arrange: Create user to register
+        User newUser = new User(0, "Test", "User", "testUser", "password123", "default user");
+        User savedUser = new User(1, "Test", "User", "testUser", "password123", "default user");
 
-        // Create user to register
-        User newUser = new User(1, "testUser", "Test", "testUser", "password123", "default user");
+        // Simulate checking if the username already exists (returns null for no match)
+        when(userDAO.findByUsername(newUser.getUsername())).thenReturn(null);
 
-        // Simulates checking if the username already exists, then returns an empty list to prove none exist.
-        when(userDAO.findByUsername(newUser.getUsername())).thenReturn(newUser);
-
-        // Match attributes of user being passed to save to ensure correct behavior.
-        // Uses Argument Matcher.
+        // Simulate saving the user
         when(userDAO.save(argThat(user ->
                 user.getFirstName().equals(newUser.getFirstName()) &&
                         user.getLastName().equals(newUser.getLastName()) &&
                         user.getUsername().equals(newUser.getUsername()) &&
                         user.getPassword().equals(newUser.getPassword()) &&
                         user.getRole().equals(newUser.getRole())
-        ))).thenReturn(newUser); // Return the same user object as if it was saved
+        ))).thenReturn(savedUser);
 
-        // Act
-        User result = underTest.registerUser(newUser.getFirstName(), newUser.getLastName(),
+        // Act: Register user
+        User result = underTest.registerUser(
+                newUser.getFirstName(), newUser.getLastName(),
                 newUser.getUsername(), newUser.getPassword(),
                 newUser.getRole());
 
-        // Assert
-        assertEquals(newUser, result); // Verify the registered user matches the input
-        verify(userDAO).findByUsername(newUser.getUsername()); // Ensure username check was called
-        verify(userDAO).save(argThat(user -> // Match attributes instead of exact object
-                user.getFirstName().equals(newUser.getFirstName()) &&
-                        user.getLastName().equals(newUser.getLastName()) &&
-                        user.getUsername().equals(newUser.getUsername()) &&
-                        user.getPassword().equals(newUser.getPassword()) &&
-                        user.getRole().equals(newUser.getRole())
-        )); // Ensure save was called
+        // Assert: Verify correct behavior
+        assertEquals(savedUser, result); // Ensure the result matches the expected saved user
+        verify(userDAO).findByUsername(newUser.getUsername()); // Check that username lookup was called
+        verify(userDAO).save(any(User.class)); // Check that save was called
     }
 
     @Test
