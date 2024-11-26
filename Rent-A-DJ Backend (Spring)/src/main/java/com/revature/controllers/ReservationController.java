@@ -1,6 +1,7 @@
 package com.revature.controllers;
 
 import com.revature.models.DJ;
+import com.revature.models.DTOs.OutgoingReservationDTO;
 import com.revature.models.Reservation;
 import com.revature.models.User;
 import com.revature.services.ReservationService;
@@ -24,23 +25,20 @@ public class ReservationController {
     @Autowired
     private ReservationService reservationService;
 
-    // Method to add a reservation with specific parameters
     @PostMapping
-    public ResponseEntity<Reservation> addReservation(
-            @RequestParam String location,
-            @RequestParam String startdatetime,
-            @RequestParam String enddatetime,
-            @RequestParam DJ dj,
-            @RequestParam User user,
-            @RequestParam String status) {
+    public ResponseEntity<OutgoingReservationDTO> addReservation(
+            @RequestBody OutgoingReservationDTO newReservation) {
+        OutgoingReservationDTO rDTO = reservationService.addReservation(
+                newReservation.getLocation(),
+                newReservation.getStartdatetime().toString(),
+                newReservation.getEnddatetime().toString(),
+                newReservation.getDjId(),
+                newReservation.getUserId(),
+                newReservation.getStatus());
 
-        // Call the service to add the reservation
-        Reservation newReservation = reservationService.addReservation(location, startdatetime, enddatetime, dj, user, status);
-
-        logger.info("Successfully added reservation for user: {} with ID: {}", user.getUsername(), newReservation.getReservationId());
-
-        return ResponseEntity.status(201).body(newReservation);
+        return ResponseEntity.ok(newReservation);
     }
+
 
 
     @GetMapping

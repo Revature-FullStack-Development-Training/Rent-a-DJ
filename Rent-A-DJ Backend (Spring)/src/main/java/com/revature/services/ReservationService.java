@@ -6,6 +6,7 @@ import com.revature.daos.DJDAO;
 import com.revature.daos.ReservationDAO;
 import com.revature.daos.UserDAO;
 import com.revature.models.DJ;
+import com.revature.models.DTOs.OutgoingReservationDTO;
 import com.revature.models.Reservation;
 import com.revature.models.User;
 import org.slf4j.Logger;
@@ -35,34 +36,26 @@ public class ReservationService {
     }
 
     //This method takes in a new Reservation object and inserts it into the DB
-    public Reservation addReservation(String location, String startdatetime, String enddatetime, DJ dj, User user, String status) {
+    public OutgoingReservationDTO addReservation(String location, String startdatetime, String enddatetime, int djId, int userId, String status) {
+        // Fetch the DJ and User from their respective DAOs
+        DJ dj = dDAO.findById(djId).orElseThrow(() -> new RuntimeException("DJ not found with ID: " + djId));
+        User user = uDAO.findById(userId).orElseThrow(() -> new RuntimeException("User not found with ID: " + userId));
 
-        //Another important role of the Service layer: data processing -
-        //Turn the ReservationDTO into a Reservation to send to the DAO (DAO takes Reservation objects, not ReservationDTOs)
-
-        //reservationId will be generated (so 0 is just a placeholder)
-        //species and name come from the DTO
-        //user will be set with the userId in the DTO
+        // Create a new Reservation
         Reservation newReservation = new Reservation(location, startdatetime, enddatetime, dj, user, status);
 
-        // Use the UserDAO to get a User by username
-        User foundUser = uDAO.findByUsername(user.getUsername());
+        // Save the reservation
+        Reservation savedReservation = rDAO.save(newReservation);
 
-        // Check if the user is null (not found)
-        if (foundUser == null) {
-            logger.error("No user found with username: {}", user.getUsername());
-            throw new IllegalArgumentException("No user found with username: " + newReservation.getUser().getUsername());
-        } else {
-            // Set the user object in the new Reservation
-            newReservation.setUser(foundUser);
-
-            // Log and save the reservation
-            logger.info("Successfully created reservation for user: {} at location: {} from {} to {}",
-                    foundUser.getUsername(), location, startdatetime, enddatetime);
-
-            // Send the Reservation to the DAO
-            return rDAO.save(newReservation);
-        }
+        // Return a DTO containing the relevant details
+        return new OutgoingReservationDTO(
+                savedReservation.getLocation(),
+                savedReservation.getStartdatetime().toString(),
+                savedReservation.getEnddatetime().toString(),
+                savedReservation.getDj().getDjId(),
+                savedReservation.getUser().getUserId(),
+                savedReservation.getStatus()
+        );
     }
 
     @Transactional

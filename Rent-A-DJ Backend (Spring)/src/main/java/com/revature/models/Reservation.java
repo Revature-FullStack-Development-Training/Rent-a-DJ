@@ -31,7 +31,7 @@ public class Reservation {
     private String location;
 
     @Column(nullable = false)
-    private String status;
+    private String status = "PENDING";
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "djId") //this links our FK to the PK in User (has to be the same amount!!!)
