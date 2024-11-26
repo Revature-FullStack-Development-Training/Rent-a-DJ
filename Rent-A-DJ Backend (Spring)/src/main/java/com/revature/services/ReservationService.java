@@ -43,7 +43,7 @@ public class ReservationService {
         Reservation newReservation = new Reservation(location, startdatetime, enddatetime, dj, user, status);
 
         //Use the UserDAO to get a User by id
-        Optional<User> u = Optional.ofNullable(uDAO.findByUsername(user.getUsername()).getFirst());
+        Optional<User> u = Optional.ofNullable(uDAO.findByUsername(user.getUsername()));
 
         /*findById returns an OPTIONAL... What does that mean?
          it will either hold the value requested, or it won't. This helps us avoid NullPointerExc.
@@ -80,7 +80,7 @@ public class ReservationService {
     }
 
     public List<Reservation> getUserReservations(String username) {
-        Optional<User> u = Optional.ofNullable(uDAO.findByUsername(username).getFirst());
+        Optional<User> u = Optional.ofNullable(uDAO.findByUsername(username));
         if (u.isEmpty()) {
             logger.error("User with Username: {} was not found when getting reservations",username);
             throw new IllegalArgumentException("No user found with username: " + username);
@@ -90,7 +90,7 @@ public class ReservationService {
     }
 
     public List<Reservation> getPendingUserReservations(String username) {
-        Optional<User> u = Optional.ofNullable(uDAO.findByUsername(username).getFirst());
+        Optional<User> u = Optional.ofNullable(uDAO.findByUsername(username));
         if (u.isEmpty()) {
             logger.error("User with Username: {} was not found when getting pending reservations", username);
             throw new IllegalArgumentException("No user found with username: " + username);
