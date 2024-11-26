@@ -20,6 +20,7 @@ export const UserTable: React.FC = () => {
       });
   };
 
+  console.log(usersForList)
   return(
     <Container>
 
@@ -36,9 +37,9 @@ export const UserTable: React.FC = () => {
             <tbody>
                 {usersForList.map((userList:any)=>(
                     <tr>
-                        <td>{userList.user_id}</td>
-                        <td>{userList.first_name}</td>
-                        <td>{userList.last_name}</td>
+                        <td>{userList.userId}</td>
+                        <td>{userList.firstName}</td>
+                        <td>{userList.lastName}</td>
                         <td>{userList.role}</td>
                         <td>{userList.username}</td>
                     </tr>
