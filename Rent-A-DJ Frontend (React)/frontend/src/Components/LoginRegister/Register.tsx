@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { Container } from 'react-bootstrap';
 //import 'bootstrap/dist/css/bootstrap.min.css';
 
 
@@ -51,7 +52,8 @@ export const Register: React.FC = () => {
     };
 
     return (
-        <form onSubmit={handleSubmit} className="my-5 mx-auto" id="regForm">
+        <Container className="mx-5">
+            <form onSubmit={handleSubmit} className="my-5 mx-auto" id="regForm">
             <h2 className="text-center">Register</h2>
             <div className="form-group">
                 <input type="text" name="firstName" value={formData.firstName} onChange={handleChange} required className="rounded-input" placeholder='First Name' />
@@ -87,6 +89,8 @@ export const Register: React.FC = () => {
                 <button type="submit" className="btn btn-success">Register</button>
                 <button type="button" className="btn btn-dark" onClick={() => navigate('/')}>Login</button>
             </div>
-        </form>
+            </form>
+        </Container>
+        
     );
 };
