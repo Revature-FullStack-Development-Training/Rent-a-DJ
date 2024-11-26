@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -84,6 +85,7 @@ public class ReservationController {
         return ResponseEntity.ok(reservations);
     }
 
+<<<<<<< HEAD
     @PatchMapping("{reservationId}/status}")
     public ResponseEntity<Reservation> resolveReservation(@PathVariable int id, @RequestParam String status){
         Reservation reservation = reservationService.resolveReservation(id, status);
@@ -92,9 +94,26 @@ public class ReservationController {
     }
 
     @PatchMapping("{reservationId}/location")
+=======
+    //Handles changing reservation start time
+    @PatchMapping("/{reservationId}/startTime")
+    public ResponseEntity<Reservation> changeStartTime(@PathVariable int reservationId, @RequestBody LocalDateTime newTime){
+        Reservation res = reservationService.changeReservationStartTime(reservationId, newTime);
+        return ResponseEntity.ok(res);
+    }
+
+
+    @PatchMapping("/{reservationId}/location")
+>>>>>>> 8f7a55b3a44044f8283a3e86bdd63742d477b6e4
     public ResponseEntity<Reservation> updateReservationLocation(@PathVariable int reservationId, @RequestBody String newLocation){
         Reservation reservation = reservationService.updateReservationLocation(reservationId, newLocation);
 
         return ResponseEntity.ok(reservation);
+    }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<String> handleIllegalArgument(IllegalArgumentException e) {
+        logger.error("IllegalArgumentException: {}", e.getMessage(), e);
+        return ResponseEntity.status(400).body(e.getMessage());
     }
 }

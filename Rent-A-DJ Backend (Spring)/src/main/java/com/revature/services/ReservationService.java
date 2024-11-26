@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -97,6 +98,15 @@ public class ReservationService {
         //not much error handling in a get all
         return rDAO.findAll();
     }
+
+    public Reservation changeReservationStartTime(int id, LocalDateTime newTime){
+        //find reservation by id or throw IllegalArguementException
+        Reservation reservation = rDAO.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Reservation not found"));
+        reservation.setStartdatetime(newTime);
+        return rDAO.save(reservation);
+    }
+
 
     public List<Reservation> getReservationsByDjIdAndUsername(int djId, String username) {
         return rDAO.findByDj_DjIdAndDj_Username(djId, username);
