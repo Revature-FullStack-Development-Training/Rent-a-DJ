@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -83,4 +84,12 @@ public class ReservationController {
         logger.info("Retrieved {} reservations for DJ ID: {} and user: {}", reservations.size(), djId, username);
         return ResponseEntity.ok(reservations);
     }
+
+    //Handles changing reservation start time
+    @PatchMapping("/{reservationId}/startTime")
+    public ResponseEntity<Reservation> changeStartTime(@PathVariable int reservationId, @RequestBody LocalDateTime newTime){
+        Reservation res = reservationService.changeReservationStartTime(reservationId, newTime);
+        return ResponseEntity.ok(res);
+    }
+
 }
