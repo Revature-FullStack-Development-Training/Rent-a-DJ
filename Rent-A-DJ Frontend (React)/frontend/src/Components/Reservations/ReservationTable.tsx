@@ -1,11 +1,16 @@
 import axios from "axios";
 import { useContext, useEffect, useState } from "react"
-import { Button, Container, Table } from "react-bootstrap";
+import { Button, Container, Form, Table } from "react-bootstrap";
 import { UserContext, useUserContext } from "../../context";
 
 export const ReservationTable: React.FC = () => {
     const user = useUserContext();
     const [reservations, setReservations] = useState<any[]>([]);
+    const [location, setLocation] = useState("");
+    const [startdatetime, setStartdatetime] = useState("");
+    const [enddatetime, setEnddatetime] = useState("");
+    const [updating, setUpdating] = useState<number | null>(null)
+    const [onlyPending, setOnlyPending] = useState<boolean>()
 
     useEffect(() => {
         if (user.loggedRole === "admin") {
@@ -18,6 +23,7 @@ export const ReservationTable: React.FC = () => {
     }, []);
 
     const getAllReservations = async () => {
+        setOnlyPending(false)
         const response = await axios.get("http://localhost:7777/reservations")
             .then((response) => {
                 setReservations(response.data);
@@ -25,6 +31,7 @@ export const ReservationTable: React.FC = () => {
     };
 
     const getReservationsByDJ = async () => {
+        setOnlyPending(false)
         const response = await axios.get("http://localhost:7777/reservations/dj/" + user.loggedID + "/username/" + user.loggedUsername)
             .then((response) => {
                 setReservations(response.data);
@@ -32,6 +39,7 @@ export const ReservationTable: React.FC = () => {
     };
 
     const getReservationsByUsername = async () => {
+        setOnlyPending(false)
         const response = await axios.get("http://localhost:7777/reservations/user/" + user.loggedUsername)
             .then((response) => {
                 setReservations(response.data);
@@ -39,6 +47,7 @@ export const ReservationTable: React.FC = () => {
     };
 
     const getPendingReservationsByUsername = async () => {
+        setOnlyPending(true)
         const response = await axios.get("http://localhost:7777/reservations/user/" + user.loggedUsername + "/pending")
             .then((response) => {
                 setReservations(response.data);
@@ -46,6 +55,7 @@ export const ReservationTable: React.FC = () => {
     };
 
     const getAllPendingReservations = async () => {
+        setOnlyPending(true)
         const response = await axios.get("http://localhost:7777/reservations/pending")
             .then((response) => {
                 setReservations(response.data);
@@ -66,6 +76,46 @@ export const ReservationTable: React.FC = () => {
     const formatDateTime = (dateTime: string) => {
         const date = new Date(dateTime);
         return date.toLocaleString();
+    };
+
+    const updateReservation = (reservationId: number) => {
+
+        setUpdating(reservationId);
+
+    }
+
+    const saveUpdatedLocation = async (reservationId: number) => {
+        
+        const updatedLocation = {location};
+
+        try {
+            const response = await axios.patch(
+              "http://localhost:7777/reservations/" + reservationId + "/location",
+              location, // Send the raw string
+              {
+                headers: {
+                "Content-Type": "text/plain", // Specify the content type if required
+                },
+              }
+            );
+            console.log("Reservation created:", response.data);
+            setUpdating(null); // Hide form after successful submission
+            // Fetch updated table data
+            onlyPending ? await getAllPendingReservations : await getAllReservations
+          } catch (error) {
+            console.error("Error updating reservation:", error);
+          } finally {
+            if (onlyPending){
+                getAllPendingReservations
+            }
+            else {
+                getAllReservations
+            }
+          }
+    }
+
+    const cancelUpdate = () => {
+        setUpdating(null); // Exit edit mode without saving
       };
 
     return (
@@ -101,7 +151,28 @@ export const ReservationTable: React.FC = () => {
                             <td>{formatDateTime(reservation.creationTime)}</td>
                             <td>{formatDateTime(reservation.startdatetime)}</td>
                             <td>{formatDateTime(reservation.enddatetime)}</td>
-                            <td>{reservation.location}</td>
+                            <td>
+                                { updating === reservation.reservationId ? 
+                                <>
+                                    <Form.Control
+                                    type="text"
+                                    value={location}
+                                    onChange={(e) => setLocation(e.target.value)}
+                                    /> 
+                                    <Button
+                                        variant="success"
+                                        size="sm"
+                                        onClick={() => saveUpdatedLocation(reservation.reservationId)}
+                                    >
+                                        Save
+                                    </Button>
+                                    <Button variant="secondary" size="sm" onClick={cancelUpdate}>
+                                        Cancel
+                                    </Button>
+                                </>
+                                : (<>{reservation.location}</>)}
+                            </td>
+                                
                             <td>{reservation.status}</td>
                             <td>{reservation.dj.djId}</td>
                             <td>{reservation.user.userId}</td>
@@ -112,6 +183,9 @@ export const ReservationTable: React.FC = () => {
                                         onClick={() => deleteReservation(reservation.reservationId)}
                                     >
                                         Delete
+                                    </Button>
+                                    <Button variant="primary" onClick={() => updateReservation(reservation.reservationId)}>
+                                        Update
                                     </Button>
                                 </td>
                             )}

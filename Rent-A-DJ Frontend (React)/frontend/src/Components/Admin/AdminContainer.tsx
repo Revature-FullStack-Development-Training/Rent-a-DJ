@@ -18,6 +18,19 @@ export const AdminContainer: React.FC = () => {
   const [error, setError] = useState("");
   const [refresh, setRefresh] = useState(false);
 
+  useEffect(() => {
+    const fetchDjs = async () => {
+      try {
+        const response = await axios.get("http://localhost:7777/djs");
+        setDjs(response.data);
+      } catch (error) {
+        console.error("Error fetching DJs:", error);
+      }
+    };
+
+    fetchDjs();
+  }, []);
+
   const createReservation = async () => {
     if (!location || !startdatetime || !enddatetime || !djId) {
       setError("All fields are required.");
@@ -58,7 +71,7 @@ export const AdminContainer: React.FC = () => {
       <h1 className="welcome-text">Welcome, {user.loggedUsername}</h1>
       <Tabs defaultActiveKey="reservations" id="admin-tabs">
         <Tab eventKey="reservations" title="Reservations" className="adminTabs">
-          <ReservationTable />
+          <ReservationTable key={refresh ? "refresh-true" : "refresh-false"}/>
           <Button className="btn-primary mb-3" onClick={() => setShowForm(!showForm)}>
         {showForm ? "Cancel" : "Create Reservation"}
       </Button>
