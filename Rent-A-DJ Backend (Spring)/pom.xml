@@ -8,12 +8,12 @@
 		<version>3.3.5</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.revature</groupId>
-	<artifactId>Rent-A-DJ</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
-	<name>Rent-A-DJ</name>
-	<description>DJ rental service for Project 2 @ Revature</description>
-	<url/>
+<!--	<groupId>com.revature</groupId>-->
+<!--	<artifactId>Rent-A-DJ</artifactId>-->
+<!--	<version>0.0.1-SNAPSHOT</version>-->
+<!--	<name>Rent-A-DJ</name>-->
+<!--	<description>DJ rental service for Project 2 @ Revature</description>-->
+<!--	<url/>-->
 	<licenses>
 		<license/>
 	</licenses>
