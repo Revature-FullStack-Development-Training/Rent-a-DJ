@@ -76,7 +76,7 @@ export const UserContainer: React.FC = () => {
         <Form>
           {error && <Alert variant="danger">{error}</Alert>}
           <Form.Group controlId="formLocation">
-            <Form.Label>Location</Form.Label>
+            <Form.Label className="welcome-text">Location</Form.Label>
             <Form.Control
               type="text"
               value={location}
@@ -85,7 +85,7 @@ export const UserContainer: React.FC = () => {
             />
           </Form.Group>
           <Form.Group controlId="formStartdatetime">
-            <Form.Label>Start DateTime</Form.Label>
+            <Form.Label className="welcome-text">Start DateTime</Form.Label>
             <Form.Control
               type="datetime-local"
               value={startdatetime}
@@ -94,7 +94,7 @@ export const UserContainer: React.FC = () => {
             />
           </Form.Group>
           <Form.Group controlId="formEnddatetime">
-            <Form.Label>End DateTime</Form.Label>
+            <Form.Label className="welcome-text">End DateTime</Form.Label>
             <Form.Control
               type="datetime-local"
               value={enddatetime}
@@ -103,7 +103,7 @@ export const UserContainer: React.FC = () => {
             />
           </Form.Group>
           <Form.Group controlId="formDjId">
-            <Form.Label>DJ</Form.Label>
+            <Form.Label className="welcome-text">DJ</Form.Label>
             <Form.Control
               as="select"
               value={djId}
