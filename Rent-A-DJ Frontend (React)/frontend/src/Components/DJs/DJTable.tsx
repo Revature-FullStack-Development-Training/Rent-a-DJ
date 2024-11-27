@@ -32,7 +32,7 @@ export const DJTable: React.FC = () => {
 
   return(
     <Container>
-
+        <h2 className="welcome-text">DJ's</h2>
         <Table className="table table-dark table-striped">
             <thead>
                 <tr>

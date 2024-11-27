@@ -71,14 +71,15 @@ export const ReservationTable: React.FC = () => {
     return (
         <Container>
             {user.loggedRole === 'user' &&
-                <Button onClick={getPendingReservationsByUsername}>pending reservations</Button>}
+                <Button className="btn-warning reservButton" onClick={getPendingReservationsByUsername}>Pending Reservations</Button>}
             {user.loggedRole === 'user' &&
-                <Button className="btn-primary" onClick={getReservationsByUsername}>all reservations</Button>}
+                <Button className="btn-primary reservButton" onClick={getReservationsByUsername}>All Reservations</Button>}
             {user.loggedRole === 'admin' &&
-                <Button className="btn-warning" onClick={getAllPendingReservations}>pending reservations</Button>}
+                <Button className="btn-warning reservButton" onClick={getAllPendingReservations}>Pending Reservations</Button>}
             {user.loggedRole === 'admin' &&
-                <Button className="btn-primary" onClick={getAllReservations}>all reservations</Button>}
+                <Button className="btn-primary reservButton" onClick={getAllReservations}>All Reservations</Button>}
 
+            <h2 className="welcome-text">Reservations</h2>
             <Table className="table table-dark table-striped">
                 <thead>
                     <tr>

@@ -32,7 +32,7 @@ export const UserTable: React.FC = () => {
   console.log(usersForList)
   return(
     <Container>
-
+        <h2 className="welcome-text">Users</h2>
         <Table className="table table-striped table-dark">
             <thead>
                 <tr>

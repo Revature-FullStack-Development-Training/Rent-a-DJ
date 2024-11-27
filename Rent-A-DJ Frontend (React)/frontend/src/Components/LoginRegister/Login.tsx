@@ -70,8 +70,8 @@ export const Login:React.FC = () => {
     return (
         <Container className="my-5 mx-auto" id="regForm"> 
 
-            <h1>DJ Reservation</h1>
-                <h3>Please Log In:</h3>
+            <h1 className="welcome-text">DJ Reservation</h1>
+                <h3 className="welcome-text">Please Log In:</h3>
                 
                 <div className="form-group">
                     <Form.Control

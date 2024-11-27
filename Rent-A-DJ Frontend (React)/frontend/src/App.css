@@ -207,7 +207,41 @@ html, body {
 }
 
 .reservButton {
-  background-color: rgb(0, 0, 0) !important;
-  color: black !important;
-  font-size: 18px !important;
+  margin-right: 1%; 
+  margin-bottom: 1%; 
+  margin-top: 2%;
+}
+
+.welcome-text {
+  color: white;
+}
+
+.nav-tabs .nav-link {
+  color: white; 
+}
+
+.nav-tabs .nav-link.active {
+  color: white; 
+}
+
+.nav-tabs .nav-link:hover {
+  color: #cccccc;
+}
+
+.form-group-inline {
+  display: flex;
+  align-items: center;
+  justify-content: center; /* Center horizontally */
+}
+
+.form-group-inline .custom-input-width {
+  width: 150px; /* Adjust the width as needed */
+}
+
+.form-group-inline .btn-warning {
+  margin-left: 1%; /* Adjust the margin as needed */
+  margin-right: 1%; 
+  margin-bottom: 2%; 
+  margin-top: 2%;
+  align-self: flex-start; 
 }

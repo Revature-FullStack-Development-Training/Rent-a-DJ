@@ -55,7 +55,7 @@ export const Register: React.FC = () => {
     return (
         <Container>
             <form onSubmit={handleSubmit} className="my-5 mx-auto" id="regForm">
-            <h2 className="text-center">Register</h2>
+            <h2 className="text-center welcome-text">Register</h2>
             <div className="form-group">
                 <input type="text" name="firstName" value={formData.firstName} onChange={handleChange} required className="rounded-input" placeholder='First Name' />
             </div>
