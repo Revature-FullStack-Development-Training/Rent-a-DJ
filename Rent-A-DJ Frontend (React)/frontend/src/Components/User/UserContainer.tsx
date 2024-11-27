@@ -69,8 +69,9 @@ export const UserContainer: React.FC = () => {
     <Container>
       <h1 className="welcome-text">Welcome, {user.loggedUsername}</h1>
       <h2 className="welcome-text">Reservation Table</h2>
+      <ReservationTable key={refresh ? "refresh-true" : "refresh-false"} />
       <Button className="btn-primary mb-3" onClick={() => setShowForm(!showForm)}>
-        {showForm ? "Hide Form" : "Create Reservation"}
+        {showForm ? "Cancel" : "Create Reservation"}
       </Button>
       {showForm && (
         <Form>
@@ -117,12 +118,13 @@ export const UserContainer: React.FC = () => {
               ))}
             </Form.Control>
           </Form.Group>
+          
           <Button className="btn-primary mt-3" onClick={createReservation}>
             Submit Reservation
           </Button>
         </Form>
       )}
-      <ReservationTable key={refresh ? "refresh-true" : "refresh-false"} />
+      
     </Container>
   );
 };
