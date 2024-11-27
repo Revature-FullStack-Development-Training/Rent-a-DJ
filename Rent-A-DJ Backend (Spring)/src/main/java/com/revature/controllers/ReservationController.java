@@ -129,6 +129,14 @@ public class ReservationController {
         return ResponseEntity.ok(pendingReservations);  // Return 200 OK with the reservations
     }
 
+    // This handles removing a Reservation from DB by its id
+    @DeleteMapping("/{reservationId}")
+    public ResponseEntity<Reservation> removeReservation(@PathVariable int reservationId) {
+        Reservation reservationToDelete = reservationService.removeReservation(reservationId);
+
+        return ResponseEntity.ok(reservationToDelete);
+    }
+
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<String> handleIllegalArgument(IllegalArgumentException e) {
         logger.error("IllegalArgumentException: {}", e.getMessage(), e);

@@ -166,4 +166,26 @@ public class ReservationService {
             throw new IllegalArgumentException("DJ not found with ID: " + djId);  // Handle DJ not found
         }
     }
+
+    //A method to delete a reservation
+    public Reservation removeReservation(int reservationId){
+
+        //User object for error handling and return
+        Reservation deletedReservation = rDAO.findByReservationId(reservationId);
+
+        //Check that the userId passed in is valid and a corresponding user exists
+        if (reservationId <= 0){
+            throw new IllegalArgumentException("Reservation Id must be greater than 0!");
+        }
+        else if (deletedReservation == null){
+            logger.error("Reservation with ID: {} was not found when trying to delete Reservation",reservationId);
+            throw new IllegalArgumentException("Reservation with Reservation ID: " + reservationId + " was not found!");
+        }
+        //Delete the reservation from the DB and return the deleted reservation
+        else {
+            rDAO.delete(deletedReservation);
+            logger.info("Reservation with ID: {} was successfully deleted", reservationId);
+            return deletedReservation;
+        }
+    }
 }
