@@ -29,7 +29,7 @@ public class ReservationService {
     private DJDAO dDAO;//we also need some UserDAO methods!
 
     @Autowired
-    public ReservationService(ReservationDAO rDAO, UserDAO uDAO) {
+    public ReservationService(ReservationDAO rDAO, UserDAO uDAO, DJDAO dDAO) {
         this.rDAO = rDAO;
         this.uDAO = uDAO;
         this.dDAO = dDAO;
