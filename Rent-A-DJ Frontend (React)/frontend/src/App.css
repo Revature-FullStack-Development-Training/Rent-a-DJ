@@ -115,12 +115,12 @@
 }
 
 #regForm {
-  /* background-color: #6b758e; */
-  background-color: rgb(255, 255, 255);
+  background-color: #6b758e;
+  /* background-color: rgb(255, 255, 255); */
   margin-top: 50px;
   padding: 5%;
-  /* box-shadow: 0 4px 8px 0 rgba(255, 255, 255, 0.5); */
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.5);
+  box-shadow: 0 4px 8px 0 rgba(255, 255, 255, 0.5);
+  /* box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.5); */
   width: 100%; /* Make the form take full width */
   max-width: 500px; /* Set a maximum width */
 }
@@ -153,7 +153,7 @@
   justify-content: center;
   gap: 10%; 
 }
-/* 
+
 html, body {
   height: 100%;
   margin: 0;
@@ -177,4 +177,37 @@ html, body {
 
 .Container {
   flex: 1;
-} */
+}
+
+.logOut {
+  position: absolute;
+  top: 1%; /* Adjust as needed */
+  right: 1%;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: #ffffff;
+  color: rgb(0, 0, 0);
+  border: none;
+  cursor: pointer;
+  font-size: 250%; /* Adjust font size if needed */
+  display: flex;
+  justify-content: center; /* Horizontal centering */
+  text-align: center;
+  line-height: 1; /* Ensure proper alignment for text-based icons */
+  overflow: hidden; /* Prevent overflow issues */
+  padding: 0; /* Remove default button padding */
+}
+
+#welcome {
+  font-size: 24px; /* Adjust as needed */
+  color: #ffffff; /* Adjust as needed */
+  text-align: center; /* Adjust as needed */
+  margin-top: 20px; /* Adjust as needed */
+}
+
+.reservButton {
+  background-color: rgb(0, 0, 0) !important;
+  color: black !important;
+  font-size: 18px !important;
+}

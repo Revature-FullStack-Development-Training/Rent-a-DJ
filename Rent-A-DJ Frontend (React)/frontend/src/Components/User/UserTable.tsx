@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useUserContext } from "../../context";
-import { Container, Table } from "react-bootstrap";
+import { Container, Table, Button } from "react-bootstrap";
 
 export const UserTable: React.FC = () => {
   const user = useUserContext();
@@ -20,18 +20,28 @@ export const UserTable: React.FC = () => {
       });
   };
 
+  const deleteUser = async (username: string) => {
+    try {
+      await axios.delete(`http://localhost:7777/users/users/${username}`);
+      setUsersForList(usersForList.filter((user: any) => user.username !== username));
+    } catch (error) {
+      console.error("Error deleting user:", error);
+    }
+  };
+
   console.log(usersForList)
   return(
     <Container>
 
-        <Table>
+        <Table className="table table-striped table-dark">
             <thead>
                 <tr>
-                    <th>id</th>
-                    <th>first name</th>
-                    <th>last name</th>
-                    <th>role</th>
-                    <th>username</th>
+                    <th>ID</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Role</th>
+                    <th>Username</th>
+                    <th>Delete</th>
                 </tr>
             </thead>
             <tbody>
@@ -42,6 +52,14 @@ export const UserTable: React.FC = () => {
                         <td>{userList.lastName}</td>
                         <td>{userList.role}</td>
                         <td>{userList.username}</td>
+                        <td>
+                          <Button
+                            variant="danger"
+                            onClick={() => deleteUser(userList.username)}
+                          >
+                            Delete
+                          </Button>
+                        </td>
                     </tr>
                 ))}
             </tbody>

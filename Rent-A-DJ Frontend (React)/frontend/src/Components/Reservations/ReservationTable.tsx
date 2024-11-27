@@ -63,10 +63,15 @@ export const ReservationTable: React.FC = () => {
         }
     };
 
+    const formatDateTime = (dateTime: string) => {
+        const date = new Date(dateTime);
+        return date.toLocaleString();
+      };
+
     return (
         <Container>
             {user.loggedRole === 'user' &&
-                <Button className="btn-warning" onClick={getPendingReservationsByUsername}>pending reservations</Button>}
+                <Button onClick={getPendingReservationsByUsername}>pending reservations</Button>}
             {user.loggedRole === 'user' &&
                 <Button className="btn-primary" onClick={getReservationsByUsername}>all reservations</Button>}
             {user.loggedRole === 'admin' &&
@@ -74,17 +79,17 @@ export const ReservationTable: React.FC = () => {
             {user.loggedRole === 'admin' &&
                 <Button className="btn-primary" onClick={getAllReservations}>all reservations</Button>}
 
-            <Table>
+            <Table className="table table-dark table-striped">
                 <thead>
                     <tr>
-                        <th>id</th>
-                        <th>creation time</th>
-                        <th>start date time</th>
-                        <th>end date time</th>
-                        <th>location</th>
-                        <th>status</th>
-                        <th>dj</th>
-                        <th>user</th>
+                        <th>ID</th>
+                        <th>Creation Time</th>
+                        <th>Start Time</th>
+                        <th>End Time</th>
+                        <th>Location</th>
+                        <th>Status</th>
+                        <th>DJ</th>
+                        <th>User</th>
                         {user.loggedRole === 'admin' && <th>Actions</th>} {/* Show 'Actions' column only for admin */}
                     </tr>
                 </thead>
@@ -92,9 +97,9 @@ export const ReservationTable: React.FC = () => {
                     {reservations.map((reservation: any) => (
                         <tr key={reservation.reservationId}>
                             <td>{reservation.reservationId}</td>
-                            <td>{reservation.creationTime}</td>
-                            <td>{reservation.startdatetime}</td>
-                            <td>{reservation.enddatetime}</td>
+                            <td>{formatDateTime(reservation.creationTime)}</td>
+                            <td>{formatDateTime(reservation.startdatetime)}</td>
+                            <td>{formatDateTime(reservation.enddatetime)}</td>
                             <td>{reservation.location}</td>
                             <td>{reservation.status}</td>
                             <td>{reservation.dj.djId}</td>
